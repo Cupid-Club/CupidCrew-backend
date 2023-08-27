@@ -1,0 +1,16 @@
+project:
+  name: cupidcrew
+  version: 1.0
+  domain: http://localhost:8080
+
+server:
+  port: 8080
+
+spring:
+  springdoc:
+    swagger-ui:
+      tryItOutEnabled: true
+      docExpansion: none
+      tagsSorter: alpha
+      operationsSorter: alpha
+      path: /swagger-ui
