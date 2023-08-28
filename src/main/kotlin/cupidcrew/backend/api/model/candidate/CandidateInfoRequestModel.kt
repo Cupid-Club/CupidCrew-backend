@@ -13,7 +13,7 @@ data class CandidateInfoRequestModel(
     var job: String,
     var mbti: String,
     var personality: String,
-    var ideal_type: String,
-    var images: MutableList<MultipartFile>,
+    var idealType: String,
+    var images: MutableList<String>? = null,
     var crewid: Long? = null
 )

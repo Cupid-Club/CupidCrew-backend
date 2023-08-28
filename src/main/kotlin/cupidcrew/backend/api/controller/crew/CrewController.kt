@@ -38,9 +38,11 @@ class CrewController(
         if (crewService.existsCrew(crewSignupRequestModel.email)) {
             throw BaseException(BaseResponseCode.DUPLICATE_EMAIL)
         }
-        crewSignupRequestModel.password = passwordEncoder.encode(crewSignupRequestModel.password)
+//        crewSignupRequestModel.password = passwordEncoder.encode(crewSignupRequestModel.password)
 
-        val crewDto = crewMapper.toDto(crewSignupRequestModel)
+        val crewDto = crewMapper.toDto(crewSignupRequestModel).apply {
+            this.m_password = passwordEncoder.encode(crewSignupRequestModel.password)
+        }
 
         return ResponseEntity.ok(crewMapper.toModel(crewService.createCrew(crewDto)))
     }

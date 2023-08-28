@@ -40,7 +40,7 @@ data class CandidateEntity(
     @Column(name = "personality", nullable = false)
     var personality: String,
 
-    @Column(name = "ideal_type", nullable = false)
+    @Column(name = "idealType", nullable = false)
     var idealType: String,
 
     @ElementCollection
@@ -48,8 +48,8 @@ data class CandidateEntity(
         name = "candidate_images",
         joinColumns = [JoinColumn(name = "candidate_id")],
     )
-    @Column(name = "image_path")
-    var images: MutableList<String>,
+    @Column(name = "images")
+    var images: MutableList<String>? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "crewid", nullable = false)

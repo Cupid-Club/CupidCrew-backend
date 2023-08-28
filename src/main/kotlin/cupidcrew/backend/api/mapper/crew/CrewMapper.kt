@@ -1,12 +1,8 @@
 package cupidcrew.backend.api.mapper.crew
 
-import cupidcrew.backend.api.dao.candidate.CandidateEntity
 import cupidcrew.backend.api.dao.crew.CrewEntity
-import cupidcrew.backend.api.dto.candidate.CandidateInfoRequestDto
 import cupidcrew.backend.api.dto.crew.CrewLoginRequestDto
 import cupidcrew.backend.api.dto.crew.CrewSignupRequestDto
-import cupidcrew.backend.api.model.candidate.CandidateInfoRequestModel
-import cupidcrew.backend.api.model.candidate.CandidateInfoResponseModel
 import cupidcrew.backend.api.model.crew.CrewLoginRequestModel
 import cupidcrew.backend.api.model.crew.CrewSignupRequestModel
 import cupidcrew.backend.api.model.crew.CrewSignupResponseModel
