@@ -1,4 +1,4 @@
-package cupidcrew.api.backend.dao.user
+package cupidcrew.backend.api.dao
 
 import org.hibernate.annotations.CreationTimestamp
 import org.springframework.data.jpa.domain.support.AuditingEntityListener

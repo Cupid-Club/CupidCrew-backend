@@ -34,8 +34,8 @@ class SecurityConfig(private val jwtTokenProvider: JwtTokenProvider) : WebSecuri
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 사용 안함
             .and()
             .authorizeRequests() // 요청에 대한 사용권한 체크
-            .antMatchers("/api/**").authenticated()
-            .antMatchers("/signup/**", "/login/**", "/logout/**").permitAll() // 로그인, 회원가입은 누구나 접근 가능
+            .antMatchers("crew/api/**").authenticated()
+            .antMatchers("crew/signup/**", "crew/login/**", "crew/logout/**").permitAll() // 로그인, 회원가입은 누구나 접근 가능
             .and()
             .addFilterBefore(JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter::class.java)
     }

@@ -1,25 +1,25 @@
-package cupidcrew.backend.api.dao.user
+package cupidcrew.backend.api.dao.crew
 
-import cupidcrew.api.backend.dao.user.BaseTime
+import cupidcrew.backend.api.dao.BaseTime
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import javax.persistence.*
 
 @Entity
-@Table(name = "users")
-class UserEntity(name: String, email: String, m_password: String) : BaseTime(), UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null
-
+@Table(name = "crew")
+class CrewEntity(
     @Column(nullable = false)
-    var name: String = name
+    var name: String,
 
     @Column(nullable = false, unique = true)
-    var email: String = email
+    var email: String,
 
-    @Column(nullable = false)
-    var m_password: String = m_password
+    @Column(name = "m_password", nullable = false)
+    var m_password: String
+) : BaseTime(), UserDetails {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var crewid: Long? = null
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority>? {
         return null
