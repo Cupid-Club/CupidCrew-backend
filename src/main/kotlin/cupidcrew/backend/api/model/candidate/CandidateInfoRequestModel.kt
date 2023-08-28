@@ -15,4 +15,5 @@ data class CandidateInfoRequestModel(
     var personality: String,
     var ideal_type: String,
     var images: MutableList<MultipartFile>,
+    var crewid: Long? = null
 )
