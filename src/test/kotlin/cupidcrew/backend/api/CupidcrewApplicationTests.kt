@@ -9,5 +9,4 @@ class CupidcrewApplicationTests {
     @Test
     fun contextLoads() {
     }
-
 }

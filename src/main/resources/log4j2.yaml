@@ -1,0 +1,55 @@
+Configuration:
+  status: debug
+  monitorInterval: 30
+  properties:
+    property:
+      - name: DEBUG_PATTERN
+        value: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%-12.12thread] %highlight{%-5level} %-45.45logger - %msg%n%xEx"
+      - name: TRACE_PATTERN
+        value: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{TRACE_ID}] %msg%n"
+
+  Appends:
+    Async:
+      - name: asyncConsoleAppender
+        bufferSize: 2048
+        AppenderRef:
+          - ref: consoleAppender
+
+      - name: asyncTraceAppender
+        bufferSize: 2048
+        AppenderRef:
+          - ref: traceAppender
+
+    Console:
+      - name: consoleAppender
+        PatternLayout:
+          Pattern: ${DEBUG_PATTERN}
+
+      - name: traceAppender
+        PatternLayout:
+          Pattern: ${TRACE_PATTERN}
+
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+        - ref: asyncConsoleAppender
+
+    logger:
+      - name: TRACE_LOGGER
+        additivity: false
+        level: info
+        AppenderRef:
+          - ref: asyncTraceAppender
+
+      - name: com.zaxxer.hikari.pool.HikariPool
+        additivity: false
+        level: debug
+        AppenderRef:
+          - ref: asyncConsoleAppender
+
+      - name: org.apache.catalina.session.ManagerBase
+        additivity: false
+        level: debug
+        AppenderRef:
+          - ref: asyncConsoleAppender
