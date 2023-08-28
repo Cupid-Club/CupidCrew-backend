@@ -20,10 +20,10 @@ class CandidateService(
         return candidateRepository.existsByPhoneNumber(phoneNumber)
     }
 
-    fun createCandidate(candidateDto: CandidateInfoRequestDto): CandidateEntity {
+    fun createCandidate(candidateDto: CandidateInfoRequestDto): CandidateInfoRequestDto {
         val candidateEntity = candidateMapper.toEntity(candidateDto)
         candidateRepository.save(candidateEntity)
 
-        return candidateEntity
+        return candidateMapper.toDto(candidateEntity)
     }
 }

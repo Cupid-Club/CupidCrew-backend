@@ -16,5 +16,7 @@ abstract class CandidateMapper {
 
     abstract fun toEntity(dto: CandidateInfoRequestDto): CandidateEntity
 
-    abstract fun toModel(entity: CandidateEntity): CandidateInfoResponseModel
+    abstract fun toDto(entity: CandidateEntity): CandidateInfoRequestDto
+
+    abstract fun toModel(dto: CandidateInfoRequestDto): CandidateInfoResponseModel
 }
