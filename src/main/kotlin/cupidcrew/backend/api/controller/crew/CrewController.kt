@@ -3,6 +3,7 @@ package cupidcrew.backend.api.controller.crew
 import cupidcrew.api.backend.exception.BaseException
 import cupidcrew.api.backend.exception.BaseResponseCode
 import cupidcrew.backend.api.dao.crew.CrewEntity
+import cupidcrew.backend.api.mapper.crew.CrewMapper
 import cupidcrew.backend.api.model.crew.CrewLoginRequestModel
 import cupidcrew.backend.api.model.crew.CrewLoginResponseModel
 import cupidcrew.backend.api.model.crew.CrewSignupRequestModel
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.PostMapping
@@ -26,7 +28,8 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/crew")
 class CrewController(
     private val crewService: CrewService,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
+    private val crewMapper: CrewMapper,
 ) {
     @Operation(summary = "회원가입", security = [SecurityRequirement(name = "bearerAuth")])
     @PostMapping("/signup")
@@ -36,7 +39,10 @@ class CrewController(
             throw BaseException(BaseResponseCode.DUPLICATE_EMAIL)
         }
         crewSignupRequestModel.password = passwordEncoder.encode(crewSignupRequestModel.password)
-        return ResponseEntity.ok(crewService.createCrew(crewSignupRequestModel))
+
+        val crewDto = crewMapper.toDto(crewSignupRequestModel)
+
+        return ResponseEntity.ok(crewMapper.toModel(crewService.createCrew(crewDto)))
     }
 
     @Operation(summary = "로그인", security = [SecurityRequirement(name = "bearerAuth")])
@@ -49,8 +55,15 @@ class CrewController(
             throw BaseException(BaseResponseCode.INVALID_PASSWORD)
         }
 
-        crewService.login(crewLoginReqestModel)
+        val crewDto = crewMapper.toDto(crewLoginReqestModel)
 
-        return ResponseEntity.ok(CrewLoginResponseModel)
+        val token = crewService.login(crewDto)
+
+        val responseModel = CrewLoginResponseModel(
+            httpStatus = HttpStatus.OK,
+            token = token
+        )
+
+        return ResponseEntity.ok(responseModel)
     }
 }
