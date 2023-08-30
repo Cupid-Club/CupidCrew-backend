@@ -52,6 +52,6 @@ data class CandidateEntity(
     var images: MutableList<String>? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "crewid", nullable = false)
-    val crew: CrewEntity
+    @JoinColumn(name = "crewId", nullable = false)
+    val crewEmail: CrewEntity
 )

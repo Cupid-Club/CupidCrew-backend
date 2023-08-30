@@ -63,7 +63,7 @@ class CrewController(
 
         val responseModel = CrewLoginResponseModel(
             httpStatus = HttpStatus.OK,
-            token = token
+            token = token,
         )
 
         return ResponseEntity.ok(responseModel)

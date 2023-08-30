@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*
 @Tag(name = "[Candidates]", description = "소개팅 당사자 정보 관련 api들")
 @RestController
 @RequestMapping("/candidates")
-class CandidateController (
+class CandidateController(
     private val candidateService: CandidateService,
     private val candidateMapper: CandidateMapper,
     private val jwtTokenProvider: JwtTokenProvider,
@@ -29,21 +29,23 @@ class CandidateController (
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
     fun addCandidates(
         @RequestHeader("Authorization") token: String,
-        @RequestBody candidateInfoRequestModel: CandidateInfoRequestModel) : ResponseEntity<CandidateInfoResponseModel> {
-
+        @RequestBody candidateInfoRequestModel: CandidateInfoRequestModel,
+    ): ResponseEntity<CandidateInfoResponseModel> {
         if (candidateService.existsCandidate(candidateInfoRequestModel.phoneNumber)) {
             throw BaseException(BaseResponseCode.DUPLICATE_PHONE_NUMBER)
         }
 
         val actualToken = token.substring("Bearer ".length)
-        val crewid = jwtTokenProvider.getCrewIdFromToken(actualToken).toLong()
+        val email = jwtTokenProvider.getUserPk(actualToken)
         val candidateInfoRequestModelWithCrewId = candidateInfoRequestModel.apply {
-            this.crewid = crewid
+            this.crewEmail = email
         }
 
         val candidateDto = candidateMapper.toDto(candidateInfoRequestModelWithCrewId)
 
-        return ResponseEntity.ok(candidateMapper.toModel(candidateService.createCandidate(candidateDto)))
+        candidateService.createCandidate(candidateDto)
 
+        return ResponseEntity.ok(candidateMapper.toModel(candidateDto))
+//        return ResponseEntity.ok(candidateDto.phoneNumber)
     }
 }

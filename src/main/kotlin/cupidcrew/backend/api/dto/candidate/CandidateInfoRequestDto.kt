@@ -13,5 +13,5 @@ data class CandidateInfoRequestDto(
     var personality: String,
     var idealType: String,
     var images: MutableList<String>? = null,
-    var crewid: Long,
+    var crewEmail: String? = null
 )

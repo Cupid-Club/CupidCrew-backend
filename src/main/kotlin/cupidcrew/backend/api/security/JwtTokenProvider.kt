@@ -67,8 +67,4 @@ class JwtTokenProvider(private val userDetailsService: UserDetailsService) {
         }
     }
 
-    fun getCrewIdFromToken(token: String): String {
-        val claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).body
-        return claims["crewid"].toString()
-    }
 }
