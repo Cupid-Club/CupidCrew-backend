@@ -13,5 +13,7 @@ data class CandidateInfoRequestDto(
     var personality: String,
     var idealType: String,
     var images: MutableList<String>? = null,
+    var popularity: Int? = 0,
+    var opportunity: Int? = 0,
     var crewEmail: String? = null
 )

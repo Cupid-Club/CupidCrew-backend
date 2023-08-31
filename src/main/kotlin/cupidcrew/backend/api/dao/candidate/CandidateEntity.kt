@@ -51,6 +51,12 @@ data class CandidateEntity(
     @Column(name = "images")
     var images: MutableList<String>? = null,
 
+    @Column(name = "popularity")
+    var popularity: Int? = 0,
+
+    @Column(name = "opportunity")
+    var opportunity: Int? = 0,
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "crewId", nullable = false)
     val crewEmail: CrewEntity

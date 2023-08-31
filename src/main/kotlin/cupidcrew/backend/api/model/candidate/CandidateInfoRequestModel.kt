@@ -1,7 +1,5 @@
 package cupidcrew.backend.api.model.candidate
 
-import org.springframework.web.multipart.MultipartFile
-
 data class CandidateInfoRequestModel(
     var status: String = "solo",
     val phoneNumber: String,
@@ -15,5 +13,7 @@ data class CandidateInfoRequestModel(
     var personality: String,
     var idealType: String,
     var images: MutableList<String>? = null,
+    var popularity: Int? = 0,
+    var opportunity: Int? = 0,
     var crewEmail: String? = null
 )

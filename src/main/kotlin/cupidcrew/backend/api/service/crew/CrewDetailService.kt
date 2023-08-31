@@ -1,7 +1,7 @@
 package cupidcrew.backend.api.service.crew
 
-import cupidcrew.api.backend.exception.BaseException
-import cupidcrew.api.backend.exception.BaseResponseCode
+import cupidcrew.backend.api.exception.BaseException
+import cupidcrew.backend.api.exception.BaseResponseCode
 import cupidcrew.backend.api.repository.crew.CrewRepository
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService

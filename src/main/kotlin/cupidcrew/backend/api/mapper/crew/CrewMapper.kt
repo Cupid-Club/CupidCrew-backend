@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 abstract class CrewMapper {
 
-    //signup
+    // signup
     abstract fun toDto(model: CrewSignupRequestModel): CrewSignupRequestDto
     abstract fun toEntity(dto: CrewSignupRequestDto): CrewEntity
     abstract fun toDto(entity: CrewEntity): CrewSignupRequestDto
@@ -22,5 +22,4 @@ abstract class CrewMapper {
 
     // login
     abstract fun toDto(model: CrewLoginRequestModel): CrewLoginRequestDto
-
 }

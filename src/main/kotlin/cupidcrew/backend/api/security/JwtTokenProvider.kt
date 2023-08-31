@@ -66,5 +66,4 @@ class JwtTokenProvider(private val userDetailsService: UserDetailsService) {
             false
         }
     }
-
 }

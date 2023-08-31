@@ -1,3 +1,3 @@
-package cupidcrew.api.backend.exception
+package cupidcrew.backend.api.exception
 
 class BaseException(val responseCode: BaseResponseCode) : RuntimeException(responseCode.message)

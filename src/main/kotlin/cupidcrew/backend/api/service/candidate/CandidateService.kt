@@ -1,13 +1,8 @@
 package cupidcrew.backend.api.service.candidate
 
-import cupidcrew.api.backend.exception.BaseException
-import cupidcrew.api.backend.exception.BaseResponseCode
-import cupidcrew.backend.api.dao.candidate.CandidateEntity
-import cupidcrew.backend.api.dao.crew.CrewEntity
 import cupidcrew.backend.api.dto.candidate.CandidateInfoRequestDto
 import cupidcrew.backend.api.mapper.candidate.CandidateMapper
-import cupidcrew.backend.api.model.candidate.CandidateInfoRequestModel
-import cupidcrew.backend.api.repository.crew.CandidateRepository
+import cupidcrew.backend.api.repository.candidate.CandidateRepository
 import org.springframework.stereotype.Service
 
 @Service
@@ -15,15 +10,21 @@ class CandidateService(
     private val candidateRepository: CandidateRepository,
     private val candidateMapper: CandidateMapper,
 ) {
+    fun retrieveAllCandidates(): List<CandidateInfoRequestDto> {
+        val candidates = candidateRepository.findAll()
+        return candidates.map { candidateMapper.toDto(it) }
+    }
 
-    fun existsCandidate(phoneNumber: String): Boolean {
+    fun retrieveSoloCandidates(): List<CandidateInfoRequestDto> {
+        val candidates = candidateRepository.findByStatus("solo")
+        return candidates.map { candidateMapper.toDto(it) }
+    }
+
+    fun existsCandidateByPhoneNumber(phoneNumber: String): Boolean {
         return candidateRepository.existsByPhoneNumber(phoneNumber)
     }
 
-    fun createCandidate(candidateDto: CandidateInfoRequestDto): CandidateInfoRequestDto {
-        val candidateEntity = candidateMapper.toEntity(candidateDto)
-        candidateRepository.save(candidateEntity)
-
-        return candidateMapper.toDto(candidateEntity)
+    fun existsCandidateById(candidateId: Long): Boolean {
+        return candidateRepository.existsById(candidateId)
     }
 }

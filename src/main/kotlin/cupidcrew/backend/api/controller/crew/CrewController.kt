@@ -1,7 +1,7 @@
 package cupidcrew.backend.api.controller.crew
 
-import cupidcrew.api.backend.exception.BaseException
-import cupidcrew.api.backend.exception.BaseResponseCode
+import cupidcrew.backend.api.exception.BaseException
+import cupidcrew.backend.api.exception.BaseResponseCode
 import cupidcrew.backend.api.dao.crew.CrewEntity
 import cupidcrew.backend.api.mapper.crew.CrewMapper
 import cupidcrew.backend.api.model.crew.CrewLoginRequestModel
