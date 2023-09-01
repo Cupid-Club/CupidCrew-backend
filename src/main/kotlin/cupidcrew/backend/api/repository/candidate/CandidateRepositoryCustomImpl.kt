@@ -7,12 +7,14 @@ import cupidcrew.backend.api.dao.candidate.QCandidateEntity
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Repository
+import org.springframework.transaction.annotation.Transactional
 
 @Repository
 class CandidateRepositoryCustomImpl(
     @Autowired val queryFactory: JPAQueryFactory,
 ) : CandidateRepositoryCustom {
 
+    @Transactional
     override fun increaseField(candidateId: Long, fieldName: String) {
         val candidate = QCandidateEntity.candidateEntity
         val field = PathBuilder(CandidateEntity::class.java, candidate.metadata.name)
