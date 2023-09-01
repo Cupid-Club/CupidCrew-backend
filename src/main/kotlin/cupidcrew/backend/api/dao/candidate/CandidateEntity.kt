@@ -1,9 +1,13 @@
 package cupidcrew.backend.api.dao.candidate
 
 import cupidcrew.backend.api.dao.crew.CrewEntity
+import org.hibernate.annotations.DynamicInsert
+import org.hibernate.annotations.DynamicUpdate
 import javax.persistence.*
 
 @Entity
+@DynamicUpdate
+@DynamicInsert
 @Table(name = "candidate")
 data class CandidateEntity(
     @Id
@@ -58,6 +62,6 @@ data class CandidateEntity(
     var opportunity: Int? = 0,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "crewId", nullable = false)
-    val crewEmail: CrewEntity
+    @JoinColumn(name = "crew", nullable = false)
+    val crew: CrewEntity
 )

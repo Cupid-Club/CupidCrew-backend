@@ -1,11 +1,15 @@
 package cupidcrew.backend.api.dao.crew
 
 import cupidcrew.backend.api.dao.BaseTime
+import org.hibernate.annotations.DynamicInsert
+import org.hibernate.annotations.DynamicUpdate
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import javax.persistence.*
 
 @Entity
+@DynamicUpdate
+@DynamicInsert
 @Table(name = "crew")
 class CrewEntity(
     @Column(nullable = false)

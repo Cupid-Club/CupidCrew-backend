@@ -17,10 +17,10 @@ abstract class CandidateMapper {
     lateinit var crewRepository: CrewRepository
     abstract fun toDto(model: CandidateInfoRequestModel): CandidateInfoRequestDto
 
-    @Mapping(source = "crewEmail", target = "crewEmail", qualifiedByName = ["mapToCrewEntity"])
+    @Mapping(source = "crew", target = "crew", qualifiedByName = ["mapToCrewEntity"])
     abstract fun toEntity(dto: CandidateInfoRequestDto): CandidateEntity
 
-    @Mapping(source = "crewEmail.email", target = "crewEmail")
+    @Mapping(source = "crew.email", target = "crew")
     abstract fun toDto(entity: CandidateEntity): CandidateInfoRequestDto
 
     @Named("mapToCrewEntity")

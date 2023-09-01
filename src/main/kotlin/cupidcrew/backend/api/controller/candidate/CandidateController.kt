@@ -57,7 +57,7 @@ class CandidateController(
         val actualToken = token.substring("Bearer ".length)
         val email = jwtTokenProvider.getUserPk(actualToken)
         val candidateInfoRequestModelWithCrewId = candidateInfoRequestModel.apply {
-            this.crewEmail = email
+            this.crew = email
         }
 
         val candidateDto = candidateMapper.toDto(candidateInfoRequestModelWithCrewId)

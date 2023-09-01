@@ -1,20 +1,21 @@
 package cupidcrew.backend.api.service.candidate
 
+import cupidcrew.backend.api.dao.crew.CrewEntity
+import cupidcrew.backend.api.dao.crew.QCrewEntity.crewEntity
 import cupidcrew.backend.api.dto.candidate.CandidateInfoRequestDto
 import cupidcrew.backend.api.mapper.candidate.CandidateMapper
 import cupidcrew.backend.api.repository.candidate.CandidateRepository
-//import cupidcrew.backend.api.repository.candidate.CandidateRepositoryCustomImpl
+// import cupidcrew.backend.api.repository.candidate.CandidateRepositoryCustomImpl
 import org.springframework.stereotype.Service
 
 @Service
 class CandidateDetailService(
     private val candidateRepository: CandidateRepository,
     private val candidateMapper: CandidateMapper,
-//    private val candidateRepositoryImplCustom: CandidateRepositoryCustomImpl,
 ) {
-    fun retrieveMyCandidates(crewId: Long): List<CandidateInfoRequestDto> {
-        val candidates = candidateRepository.findById(crewId).orElse(null)
-        return candidates?.let { listOf(candidateMapper.toDto(it)) } ?: emptyList()
+    fun retrieveMyCandidates(crew: CrewEntity): List<CandidateInfoRequestDto> {
+        val candidates = candidateRepository.findByCrew(crew)
+        return candidates.map { candidateMapper.toDto(it) }
     }
 
     fun createCandidate(candidateDto: CandidateInfoRequestDto): CandidateInfoRequestDto {
@@ -28,11 +29,11 @@ class CandidateDetailService(
         candidateRepository.deleteById(candidateId)
     }
 
-//    fun increasePopularity(candidateId: Long) {
-//        candidateRepositoryImplCustom.increaseField(candidateId, "popularity")
-//    }
-//
-//    fun increaseOpportunity(candidateId: Long) {
-//        candidateRepositoryImplCustom.increaseField(candidateId, "opportunity")
-//    }
+    fun increasePopularity(candidateId: Long) {
+        candidateRepository.increaseField(candidateId, "popularity")
+    }
+
+    fun increaseOpportunity(candidateId: Long) {
+        candidateRepository.increaseField(candidateId, "opportunity")
+    }
 }

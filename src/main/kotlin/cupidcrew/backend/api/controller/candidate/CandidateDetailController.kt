@@ -37,7 +37,7 @@ class CandidateDetailController(
         val crewEmail = jwtTokenProvider.getUserPk(actualToken)
         val crew = crewService.findCrew(crewEmail)
 
-        val candidatesDto = candidateDetailService.retrieveMyCandidates(crew.crewid!!)
+        val candidatesDto = candidateDetailService.retrieveMyCandidates(crew)
 
         return ResponseEntity.ok(candidatesDto.map { candidateMapper.toModel(it) })
     }
@@ -85,7 +85,7 @@ class CandidateDetailController(
             throw BaseException(BaseResponseCode.CANDIDATE_NOT_FOUND)
         }
 
-//        candidateDetailService.increasePopularity(candidateId)
+        candidateDetailService.increasePopularity(candidateId)
 
         return ResponseEntity.ok("popularity +1.")
     }
@@ -100,7 +100,7 @@ class CandidateDetailController(
             throw BaseException(BaseResponseCode.CANDIDATE_NOT_FOUND)
         }
 
-//        candidateDetailService.increaseOpportunity(candidateId)
+        candidateDetailService.increaseOpportunity(candidateId)
 
         return ResponseEntity.ok("opportunity +1.")
     }

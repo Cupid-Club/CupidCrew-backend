@@ -15,5 +15,5 @@ data class CandidateInfoRequestModel(
     var images: MutableList<String>? = null,
     var popularity: Int? = 0,
     var opportunity: Int? = 0,
-    var crewEmail: String? = null
+    var crew: String? = null
 )
