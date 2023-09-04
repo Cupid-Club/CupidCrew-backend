@@ -56,7 +56,7 @@ class CandidateDetailController(
 
         val candidateDto = candidateMapper.toDto(candidateInfoRequestModel)
 
-        candidateDetailService.createCandidate(candidateDto)
+        candidateDetailService.reviseCandidate(candidateDto)
 
         return BaseResponseModel(HttpStatus.OK, candidateMapper.toModel(candidateDto))
     }

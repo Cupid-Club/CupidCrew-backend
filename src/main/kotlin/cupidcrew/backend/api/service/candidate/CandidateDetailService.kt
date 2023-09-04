@@ -25,6 +25,13 @@ class CandidateDetailService(
         return candidateMapper.toDto(candidateEntity)
     }
 
+    fun reviseCandidate(candidateDto: CandidateInfoRequestDto): CandidateInfoRequestDto {
+        val candidateEntity = candidateMapper.toEntity(candidateDto)
+        val updatedCandidate = candidateRepository.save(candidateEntity)
+
+        return candidateMapper.toDto(updatedCandidate)
+    }
+
     fun deleteCandidate(candidateId: Long) {
         candidateRepository.deleteById(candidateId)
     }
