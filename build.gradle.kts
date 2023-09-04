@@ -55,7 +55,8 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-ui:1.7.0")
     // db
 //    runtimeOnly("com.h2database:h2")
-    runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
+    implementation("org.mariadb.jdbc:mariadb-java-client:3.1.2")
+//    runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
     // querydsl
     val querydslVersion = "5.0.0"
     implementation("com.querydsl:querydsl-jpa:$querydslVersion")
