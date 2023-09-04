@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.http.ResponseEntity
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @Tag(name = "[Candidates]", description = "소개팅 당사자 정보 관련 api들")
@@ -30,17 +30,17 @@ class CandidateController(
     @Operation(summary = "모든 소개팅 당사자 조회", security = [SecurityRequirement(name = "bearerAuth")])
     @GetMapping("/all")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
-    fun getAllCandidates(): ResponseEntity<BaseResponseModel<List<CandidateInfoResponseModel>>> {
-        val allCandidatesDto = candidateService.retrieveAllCandidates()
-        return ResponseEntity.ok(BaseResponseModel(allCandidatesDto.map { candidateMapper.toModel(it) }))
+    fun getAllCandidates(): BaseResponseModel<List<CandidateInfoResponseModel>> {
+        val candidatesDto = candidateService.retrieveAllCandidates()
+        return BaseResponseModel(HttpStatus.OK, candidatesDto.map { candidateMapper.toModel(it) })
     }
 
-    @Operation(summary = "SOLO인 소개팅 당사자 조회", security = [SecurityRequirement(name = "bearerAuth")])
-    @GetMapping("/solo")
+    @Operation(summary = "Single인 소개팅 당사자 조회", security = [SecurityRequirement(name = "bearerAuth")])
+    @GetMapping("/single")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
-    fun getSoloCandidates(): ResponseEntity<List<CandidateInfoResponseModel>> {
-        val soloCandidatesDto = candidateService.retrieveSoloCandidates()
-        return ResponseEntity.ok(soloCandidatesDto.map { candidateMapper.toModel(it) })
+    fun getSingleCandidates(): BaseResponseModel<List<CandidateInfoResponseModel>> {
+        val candidatesDto = candidateService.retrieveSingleCandidates()
+        return BaseResponseModel(HttpStatus.OK, candidatesDto.map { candidateMapper.toModel(it) })
     }
 
     @Operation(summary = "소개팅 당사자 등록", security = [SecurityRequirement(name = "bearerAuth")])
@@ -49,7 +49,7 @@ class CandidateController(
     fun addCandidates(
         @RequestHeader("Authorization") token: String,
         @RequestBody candidateInfoRequestModel: CandidateInfoRequestModel,
-    ): ResponseEntity<CandidateInfoResponseModel> {
+    ): BaseResponseModel<CandidateInfoResponseModel> {
         if (candidateService.existsCandidateByPhoneNumber(candidateInfoRequestModel.phoneNumber)) {
             throw BaseException(BaseResponseCode.DUPLICATE_PHONE_NUMBER)
         }
@@ -64,6 +64,6 @@ class CandidateController(
 
         candidateDetailService.createCandidate(candidateDto)
 
-        return ResponseEntity.ok(candidateMapper.toModel(candidateDto))
+        return BaseResponseModel(HttpStatus.OK, candidateMapper.toModel(candidateDto))
     }
 }

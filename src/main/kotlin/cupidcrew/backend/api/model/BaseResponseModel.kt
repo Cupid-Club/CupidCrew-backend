@@ -1,10 +1,8 @@
 package cupidcrew.backend.api.model
 
+import org.springframework.http.HttpStatus
+
 open class BaseResponseModel<T>(
+    val httpStatus: HttpStatus,
     val data: T? = null,
-    val msg: String? = null
-) {
-    companion object {
-        fun <T> ofData(data: T): BaseResponseModel<T> = BaseResponseModel(data)
-    }
-}
+)

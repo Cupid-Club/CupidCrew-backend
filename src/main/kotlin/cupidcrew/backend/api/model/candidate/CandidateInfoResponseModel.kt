@@ -1,6 +1,7 @@
 package cupidcrew.backend.api.model.candidate
 
 data class CandidateInfoResponseModel(
+    val id: Long? = 0,
     var status: String? = "solo",
     val phoneNumber: String,
     val gender: String,
