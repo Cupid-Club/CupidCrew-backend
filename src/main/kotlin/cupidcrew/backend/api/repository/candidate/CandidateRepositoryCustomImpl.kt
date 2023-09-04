@@ -7,7 +7,7 @@ import cupidcrew.backend.api.dao.candidate.QCandidateEntity
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Repository
-import org.springframework.transaction.annotation.Transactional
+import javax.transaction.Transactional
 
 @Repository
 class CandidateRepositoryCustomImpl(

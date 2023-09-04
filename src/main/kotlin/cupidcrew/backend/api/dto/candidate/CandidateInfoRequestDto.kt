@@ -1,6 +1,7 @@
 package cupidcrew.backend.api.dto.candidate
 
 data class CandidateInfoRequestDto(
+    val id: Long,
     var status: String = "solo",
     val phoneNumber: String,
     val gender: String,

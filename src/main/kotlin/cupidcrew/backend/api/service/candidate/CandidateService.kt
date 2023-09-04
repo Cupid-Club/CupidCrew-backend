@@ -15,8 +15,8 @@ class CandidateService(
         return candidates.map { candidateMapper.toDto(it) }
     }
 
-    fun retrieveSoloCandidates(): List<CandidateInfoRequestDto> {
-        val candidates = candidateRepository.findByStatus("solo")
+    fun retrieveSingleCandidates(): List<CandidateInfoRequestDto> {
+        val candidates = candidateRepository.findByStatus("single")
         return candidates.map { candidateMapper.toDto(it) }
     }
 

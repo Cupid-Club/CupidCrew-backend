@@ -3,6 +3,7 @@ package cupidcrew.backend.api.controller.candidate
 import cupidcrew.backend.api.exception.BaseException
 import cupidcrew.backend.api.exception.BaseResponseCode
 import cupidcrew.backend.api.mapper.candidate.CandidateMapper
+import cupidcrew.backend.api.model.BaseResponseModel
 import cupidcrew.backend.api.model.candidate.CandidateInfoRequestModel
 import cupidcrew.backend.api.model.candidate.CandidateInfoResponseModel
 import cupidcrew.backend.api.security.JwtTokenProvider
@@ -14,7 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.http.ResponseEntity
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @Tag(name = "[Candidates-detail]", description = "소개팅 각 당사자 관련 기능 api들")
@@ -32,14 +33,14 @@ class CandidateDetailController(
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
     fun getMyCandidates(
         @RequestHeader("Authorization") token: String,
-    ): ResponseEntity<List<CandidateInfoResponseModel>> {
+    ): BaseResponseModel<List<CandidateInfoResponseModel>> {
         val actualToken = token.substring("Bearer ".length)
         val crewEmail = jwtTokenProvider.getUserPk(actualToken)
         val crew = crewService.findCrew(crewEmail)
 
         val candidatesDto = candidateDetailService.retrieveMyCandidates(crew)
 
-        return ResponseEntity.ok(candidatesDto.map { candidateMapper.toModel(it) })
+        return BaseResponseModel(HttpStatus.OK, candidatesDto.map { candidateMapper.toModel(it) })
     }
 
     @Operation(summary = "나의 소개팅 당사자 정보 수정", security = [SecurityRequirement(name = "bearerAuth")])
@@ -48,16 +49,16 @@ class CandidateDetailController(
     fun reviseMyCandidate(
         @PathVariable candidateId: Long,
         @RequestBody candidateInfoRequestModel: CandidateInfoRequestModel,
-    ): ResponseEntity<CandidateInfoResponseModel> {
+    ): BaseResponseModel<CandidateInfoResponseModel> {
         if (!candidateService.existsCandidateById(candidateId)) {
             throw BaseException(BaseResponseCode.CANDIDATE_NOT_FOUND)
         }
 
         val candidateDto = candidateMapper.toDto(candidateInfoRequestModel)
 
-        candidateDetailService.createCandidate(candidateDto)
+        candidateDetailService.reviseCandidate(candidateDto)
 
-        return ResponseEntity.ok(candidateMapper.toModel(candidateDto))
+        return BaseResponseModel(HttpStatus.OK, candidateMapper.toModel(candidateDto))
     }
 
     @Operation(summary = "나의 소개팅 당사자 삭제", security = [SecurityRequirement(name = "bearerAuth")])
@@ -65,14 +66,14 @@ class CandidateDetailController(
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
     fun deleteMyCandidate(
         @PathVariable candidateId: Long,
-    ): ResponseEntity<String> {
+    ): BaseResponseModel<String> {
         if (!candidateService.existsCandidateById(candidateId)) {
             throw BaseException(BaseResponseCode.CANDIDATE_NOT_FOUND)
         }
 
         candidateDetailService.deleteCandidate(candidateId)
 
-        return ResponseEntity.ok("delete.")
+        return BaseResponseModel(HttpStatus.OK, "delete.")
     }
 
     @Operation(summary = "나의 소개팅 당사자 인기도 증가", security = [SecurityRequirement(name = "bearerAuth")])
@@ -80,14 +81,14 @@ class CandidateDetailController(
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
     fun increaseMyCandidatePopularity(
         @PathVariable candidateId: Long,
-    ): ResponseEntity<String> {
+    ): BaseResponseModel<String> {
         if (!candidateService.existsCandidateById(candidateId)) {
             throw BaseException(BaseResponseCode.CANDIDATE_NOT_FOUND)
         }
 
         candidateDetailService.increasePopularity(candidateId)
 
-        return ResponseEntity.ok("popularity +1.")
+        return BaseResponseModel(HttpStatus.OK, "popularity+1")
     }
 
     @Operation(summary = "나의 소개팅 당사자 기회 증가", security = [SecurityRequirement(name = "bearerAuth")])
@@ -95,13 +96,13 @@ class CandidateDetailController(
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
     fun increaseMyCandidateOpportunity(
         @PathVariable candidateId: Long,
-    ): ResponseEntity<String> {
+    ): BaseResponseModel<String> {
         if (!candidateService.existsCandidateById(candidateId)) {
             throw BaseException(BaseResponseCode.CANDIDATE_NOT_FOUND)
         }
 
         candidateDetailService.increaseOpportunity(candidateId)
 
-        return ResponseEntity.ok("opportunity +1.")
+        return BaseResponseModel(HttpStatus.OK, "opportunity+1")
     }
 }

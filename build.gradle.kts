@@ -54,13 +54,13 @@ dependencies {
     // docs
     implementation("org.springdoc:springdoc-openapi-ui:1.7.0")
     // db
-    runtimeOnly("com.h2database:h2")
+//    runtimeOnly("com.h2database:h2")
+    runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
     // querydsl
     val querydslVersion = "5.0.0"
     implementation("com.querydsl:querydsl-jpa:$querydslVersion")
     kapt("com.querydsl:querydsl-apt:$querydslVersion:jpa")
     implementation("com.querydsl:querydsl-apt:$querydslVersion")
-//    runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
     // test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
