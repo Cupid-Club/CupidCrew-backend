@@ -1,7 +1,6 @@
 project:
   name: cupidcrew
   version: 1.0
-  domain: http://localhost:8080
 
 server:
   port: 8080
@@ -25,9 +24,6 @@ spring:
       docExpansion: none
       tagsSorter: alpha
       operationsSorter: alpha
-#      path: /swagger-ui
-
-
 
 #logging:
 #  config: src/main/resources/log4j2.yaml
