@@ -13,12 +13,11 @@ import javax.servlet.http.HttpServletRequest
 
 // JWT 토큰을 발급하고, 인증 정보를 조회하고, 회원 정보를 추출하는 JwtTokenProvider를 생성합니다.
 @Component
-class JwtTokenProvider(private val userDetailsService: UserDetailsService) {
+class JwtTokenProvider(
+    private val userDetailsService: UserDetailsService,
+) {
     // JWT를 생성하고 검증하는 컴포넌트
-    private var secretKey = "thisistestusersecretkeyprojectnameismologaaaaaaaaaaaaaaaa"
-
-    // 토큰 유효시간 3개월
-    private val tokenValidTime = 90 * 24 * 60 * 60 * 1000L
+    private var secretKey = "thisiscupidcrewprojectwhichisthebestapplicationintheworld"
 
     // 객체 초기화, secretKey를 Base64로 인코딩한다.
     @PostConstruct
@@ -27,7 +26,9 @@ class JwtTokenProvider(private val userDetailsService: UserDetailsService) {
     }
 
     // JWT 토큰 생성
-    fun createToken(userPk: String): String {
+    fun createToken(userPk: String, tokenValidTimeParam: Long? = null): String {
+        // 토큰 유효시간 3개월
+        val tokenValidTime = tokenValidTimeParam ?: (90 * 24 * 60 * 60 * 1000L)
         val claims: Claims = Jwts.claims().setSubject(userPk) // JWT payload 에 저장되는 정보단위
         claims["userPk"] = userPk // 정보는 key / value 쌍으로 저장된다.
         val now = Date()

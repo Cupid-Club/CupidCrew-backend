@@ -9,8 +9,8 @@ http://localhost:8080/swagger-ui/index.html
 - SSH용 포트=22 말고 다른 아무번호 추가해서 그걸로 접속해야함 
 - lightsail instance ssh 접속
   ````
-  ssh/LightsailDefaultKey-ap-northeast-2.pem ec2-user@3.39.66.26 -p922
-  ssh/defaultKey.pem ec2-user@3.39.66.26 -p922
+  ssh -i LightsailDefaultKey-ap-northeast-2.pem ec2-user@3.39.66.26 -p922
+  ssh -i defaultKey.pem ec2-user@3.39.66.26 -p922
   ````
 - Mariadb docker container 실행  
     ````
