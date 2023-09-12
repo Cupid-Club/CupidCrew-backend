@@ -19,7 +19,13 @@ class CrewEntity(
     var email: String,
 
     @Column(name = "m_password", nullable = false)
-    var m_password: String
+    var m_password: String,
+
+    @Column(nullable = false)
+    val mutualFriend: String,
+
+    @Column(nullable = false)
+    val company: String,
 ) : BaseTime(), UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
