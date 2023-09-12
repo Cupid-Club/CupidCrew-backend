@@ -32,7 +32,7 @@ class CandidateController(
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
     fun getAllCandidates(): BaseResponseModel<List<CandidateInfoResponseModel>> {
         val candidatesDto = candidateService.retrieveAllCandidates()
-        return BaseResponseModel(HttpStatus.OK, candidatesDto.map { candidateMapper.toModel(it) })
+        return BaseResponseModel(HttpStatus.OK.value(), candidatesDto.map { candidateMapper.toModel(it) })
     }
 
     @Operation(summary = "Single인 소개팅 당사자 조회", security = [SecurityRequirement(name = "bearerAuth")])
@@ -40,7 +40,7 @@ class CandidateController(
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
     fun getSingleCandidates(): BaseResponseModel<List<CandidateInfoResponseModel>> {
         val candidatesDto = candidateService.retrieveSingleCandidates()
-        return BaseResponseModel(HttpStatus.OK, candidatesDto.map { candidateMapper.toModel(it) })
+        return BaseResponseModel(HttpStatus.OK.value(), candidatesDto.map { candidateMapper.toModel(it) })
     }
 
     @Operation(summary = "소개팅 당사자 등록", security = [SecurityRequirement(name = "bearerAuth")])
@@ -64,6 +64,6 @@ class CandidateController(
 
         candidateDetailService.createCandidate(candidateDto)
 
-        return BaseResponseModel(HttpStatus.OK, candidateMapper.toModel(candidateDto))
+        return BaseResponseModel(HttpStatus.OK.value(), candidateMapper.toModel(candidateDto))
     }
 }

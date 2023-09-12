@@ -40,7 +40,7 @@ class CandidateDetailController(
 
         val candidatesDto = candidateDetailService.retrieveMyCandidates(crew)
 
-        return BaseResponseModel(HttpStatus.OK, candidatesDto.map { candidateMapper.toModel(it) })
+        return BaseResponseModel(HttpStatus.OK.value(), candidatesDto.map { candidateMapper.toModel(it) })
     }
 
     @Operation(summary = "나의 소개팅 당사자 정보 수정", security = [SecurityRequirement(name = "bearerAuth")])
@@ -58,7 +58,7 @@ class CandidateDetailController(
 
         candidateDetailService.reviseCandidate(candidateDto)
 
-        return BaseResponseModel(HttpStatus.OK, candidateMapper.toModel(candidateDto))
+        return BaseResponseModel(HttpStatus.OK.value(), candidateMapper.toModel(candidateDto))
     }
 
     @Operation(summary = "나의 소개팅 당사자 삭제", security = [SecurityRequirement(name = "bearerAuth")])
@@ -73,7 +73,7 @@ class CandidateDetailController(
 
         candidateDetailService.deleteCandidate(candidateId)
 
-        return BaseResponseModel(HttpStatus.OK, "delete.")
+        return BaseResponseModel(HttpStatus.OK.value(), "delete.")
     }
 
     @Operation(summary = "나의 소개팅 당사자 인기도 증가", security = [SecurityRequirement(name = "bearerAuth")])
@@ -88,7 +88,7 @@ class CandidateDetailController(
 
         candidateDetailService.increasePopularity(candidateId)
 
-        return BaseResponseModel(HttpStatus.OK, "popularity+1")
+        return BaseResponseModel(HttpStatus.OK.value(), "popularity+1")
     }
 
     @Operation(summary = "나의 소개팅 당사자 기회 증가", security = [SecurityRequirement(name = "bearerAuth")])
@@ -103,6 +103,6 @@ class CandidateDetailController(
 
         candidateDetailService.increaseOpportunity(candidateId)
 
-        return BaseResponseModel(HttpStatus.OK, "opportunity+1")
+        return BaseResponseModel(HttpStatus.OK.value(), "opportunity+1")
     }
 }

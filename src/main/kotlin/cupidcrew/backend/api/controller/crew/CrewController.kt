@@ -38,13 +38,12 @@ class CrewController(
         if (crewService.existsCrew(crewSignupRequestModel.email)) {
             throw BaseException(BaseResponseCode.DUPLICATE_EMAIL)
         }
-//        crewSignupRequestModel.password = passwordEncoder.encode(crewSignupRequestModel.password)
 
         val crewDto = crewMapper.toDto(crewSignupRequestModel).apply {
             this.m_password = passwordEncoder.encode(crewSignupRequestModel.password)
         }
 
-        return BaseResponseModel(HttpStatus.OK, crewMapper.toModel(crewService.createCrew(crewDto)))
+        return BaseResponseModel(HttpStatus.OK.value(), crewMapper.toModel(crewService.createCrew(crewDto)))
     }
 
     @Operation(summary = "로그인", security = [SecurityRequirement(name = "bearerAuth")])
@@ -59,6 +58,6 @@ class CrewController(
 
         val crewDto = crewMapper.toDto(crewLoginReqestModel)
 
-        return BaseResponseModel(HttpStatus.OK, CrewLoginResponseModel(crewService.login(crewDto)))
+        return BaseResponseModel(HttpStatus.OK.value(), CrewLoginResponseModel(crewService.login(crewDto)))
     }
 }
