@@ -57,6 +57,7 @@ dependencies {
 //    runtimeOnly("com.h2database:h2")
     implementation("org.mariadb.jdbc:mariadb-java-client:3.1.2")
 //    runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
+    implementation("io.minio:minio:8.4.2")
     // querydsl
     val querydslVersion = "5.0.0"
     implementation("com.querydsl:querydsl-jpa:$querydslVersion")

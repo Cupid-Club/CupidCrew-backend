@@ -9,13 +9,17 @@ import cupidcrew.backend.api.model.candidate.CandidateInfoResponseModel
 import cupidcrew.backend.api.security.JwtTokenProvider
 import cupidcrew.backend.api.service.candidate.CandidateDetailService
 import cupidcrew.backend.api.service.candidate.CandidateService
+import cupidcrew.backend.api.service.candidate.FileStorageService
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 
 @Tag(name = "[Candidates]", description = "소개팅 당사자 정보 관련 api들")
 @RestController
@@ -25,8 +29,9 @@ class CandidateController(
     private val candidateDetailService: CandidateDetailService,
     private val candidateMapper: CandidateMapper,
     private val jwtTokenProvider: JwtTokenProvider,
+    private val fileStorageService: FileStorageService,
 
-) {
+    ) {
     @Operation(summary = "모든 소개팅 당사자 조회", security = [SecurityRequirement(name = "bearerAuth")])
     @GetMapping("/all")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
@@ -66,4 +71,13 @@ class CandidateController(
 
         return BaseResponseModel(HttpStatus.OK.value(), candidateMapper.toModel(candidateDto))
     }
+
+    @Operation(summary = "소개팅 남녀 사진 업로드", security = [SecurityRequirement(name = "bearerAuth")])
+    @PostMapping("/upload", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
+    fun uploadFiles(
+        @RequestPart("files") files: List<MultipartFile>): BaseResponseModel<List<String>> {
+        return BaseResponseModel(HttpStatus.OK.value(), fileStorageService.uploadFiles(files))
+    }
+
 }

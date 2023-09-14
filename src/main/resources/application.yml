@@ -4,8 +4,15 @@ project:
 
 server:
   port: 8080
+  tomcat:
+    max-http-form-post-size: 100MB
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
   datasource:
     url : jdbc:mariadb://localhost:3306/cupidcrew
     driver-class-name: org.mariadb.jdbc.Driver
@@ -24,6 +31,12 @@ spring:
       docExpansion: none
       tagsSorter: alpha
       operationsSorter: alpha
+
+minio:
+  url: http://localhost:9000
+  accessKey: ivy
+  secretKey: 123456789
+  bucketName: candidates
 
 #logging:
 #  config: src/main/resources/log4j2.yaml

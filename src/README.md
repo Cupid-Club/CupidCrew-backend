@@ -4,7 +4,7 @@ http://localhost:8080/swagger-ui/index.html
 - mariaDB
 - kotlin
 
-### VM 
+### local & VM 
 - VM(aws lightsail) : https://lightsail.aws.amazon.com/ls/webapp/ap-northeast-2/instances
 - SSH용 포트=22 말고 다른 아무번호 추가해서 그걸로 접속해야함 
 - lightsail instance ssh 접속
@@ -28,6 +28,27 @@ http://localhost:8080/swagger-ui/index.html
     cat ~/.ssh/id_rsa.pub
     Git 가서 위에 등록하면됨
     ````
+
+- minio
+  ````
+  mkdir -p ~/minio/data
+  ````
+  ````
+  1.minio server 시작
+  docker run -p 9000:9000 -d -p 9001:9001 --name minio -v ~/minio/data:/data -e "MINIO_ROOT_USER=ivy" -e "MINIO_ROOT_PASSWORD=123456789" quay.io/minio/minio server /data --console-address ":9001"
+  
+  2.minio createbuckets server 시작
+  docker run -it --name createbuckets -d --link minio minio/mc 
+  
+  3.컨테이너 들어감
+  docker exec -it createbuckets /bin/bash
+  
+  4.bucket 만들기  
+  /usr/bin/mc alias set cupidcrew http://minio:9000 ivy 123456789
+  /usr/bin/mc mb cupidcrew/candidates
+  /usr/bin/mc policy set public cupidcrew/candidates
+  ````
+
 - Supervisord 설정
 
 
