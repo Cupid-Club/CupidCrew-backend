@@ -61,3 +61,9 @@ http://localhost:8080/swagger-ui/index.html
 - 디렉토리 구조 설정
 - start-cupidcrew.sh 작성
 - git pull, start-cupidcrew.sh 등 섞어서 배포 자동화 파일 작성
+- deploy.sh 작성
+  ````
+  git pull origin main
+  ~/app/cupidcrew/gradlew build --debug
+  source ~/work/bin/start-cupidcrew.sh
+  ````
