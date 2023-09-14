@@ -62,8 +62,4 @@ http://localhost:8080/swagger-ui/index.html
 - start-cupidcrew.sh 작성
 - git pull, start-cupidcrew.sh 등 섞어서 배포 자동화 파일 작성
 - deploy.sh 작성
-  ````
-  git pull origin main
-  ~/app/cupidcrew/gradlew build --debug
-  source ~/work/bin/start-cupidcrew.sh
-  ````
+- swagger: http://3.39.66.26:8080/swagger-ui/index.html
