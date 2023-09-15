@@ -55,7 +55,7 @@ class CrewController(
     fun login(@RequestBody crewLoginReqestModel: CrewLoginRequestModel): BaseResponseModel<CrewLoginResponseModel> {
         val crew: CrewEntity = crewService.findCrew(crewLoginReqestModel.email)
 
-        if (crew.isApproved == 0) {
+        if (!crew.isApproved) {
             throw BaseException(BaseResponseCode.NOT_YET_APPROVED_AS_CREW)
         }
 
