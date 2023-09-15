@@ -52,8 +52,8 @@ data class CandidateEntity(
         name = "candidate_images",
         joinColumns = [JoinColumn(name = "candidate_id")],
     )
-    @Column(name = "images")
-    var images: MutableList<String>? = null,
+    @Column(name = "imagesUrl")
+    var imagesUrl: MutableList<String>? = null,
 
     @Column(name = "popularity")
     var popularity: Int? = 0,
