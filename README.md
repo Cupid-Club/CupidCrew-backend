@@ -12,6 +12,12 @@ http://localhost:8080/swagger-ui/index.html
   ssh -i LightsailDefaultKey-ap-northeast-2.pem ec2-user@3.39.66.26 -p922
   ssh -i defaultKey.pem ec2-user@3.39.66.26 -p922
   ````
+- Git SSH 설정
+    ````
+    ssh-keygen
+    cat ~/.ssh/id_rsa.pub
+    Git 가서 위에 등록하면됨
+    ````
 - Mariadb docker container 실행  
     ````
     docker run -d --name mariadb -e MYSQL_ROOT_PASSWORD=1234 -e MYSQL_DATABASE=cupidcrew -e MYSQL_USER=ivy -e MYSQL_PASSWORD=1234 -p 3306:3306 mariadb/server:latest
@@ -21,12 +27,6 @@ http://localhost:8080/swagger-ui/index.html
     ````
     ````
     apt-get update && apt-get install mariadb-client -y
-    ````
-- Git SSH 설정
-    ````
-    ssh-keygen
-    cat ~/.ssh/id_rsa.pub
-    Git 가서 위에 등록하면됨
     ````
 
 - minio
@@ -62,4 +62,4 @@ http://localhost:8080/swagger-ui/index.html
 - start-cupidcrew.sh 작성
 - git pull, start-cupidcrew.sh 등 섞어서 배포 자동화 파일 작성
 - deploy.sh 작성
-- swagger: http://3.39.66.26:8080/swagger-ui/index.html# project에 추가
+- swagger: http://3.39.66.26:8080/swagger-ui/index.html
