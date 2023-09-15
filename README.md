@@ -62,4 +62,4 @@ http://localhost:8080/swagger-ui/index.html
 - start-cupidcrew.sh 작성
 - git pull, start-cupidcrew.sh 등 섞어서 배포 자동화 파일 작성
 - deploy.sh 작성
-- swagger: http://3.39.66.26:8080/swagger-ui/index.html
+- swagger: http://3.39.66.26:8080/swagger-ui/index.html# project에 추가
