@@ -10,6 +10,7 @@ import cupidcrew.backend.api.security.JwtTokenProvider
 import cupidcrew.backend.api.service.candidate.CandidateDetailService
 import cupidcrew.backend.api.service.candidate.CandidateService
 import cupidcrew.backend.api.service.candidate.FileStorageService
+import cupidcrew.backend.api.service.crew.CrewService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -25,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile
 @RestController
 @RequestMapping("/candidates")
 class CandidateController(
+    private val crewService: CrewService,
     private val candidateService: CandidateService,
     private val candidateDetailService: CandidateDetailService,
     private val candidateMapper: CandidateMapper,
@@ -35,15 +37,36 @@ class CandidateController(
     @Operation(summary = "모든 소개팅 당사자 조회", security = [SecurityRequirement(name = "bearerAuth")])
     @GetMapping("/all")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
-    fun getAllCandidates(): BaseResponseModel<List<CandidateInfoResponseModel>> {
+    fun getAllCandidates(
+        @RequestHeader("Authorization") token: String,
+    ): BaseResponseModel<List<CandidateInfoResponseModel>> {
+        val actualToken = token.substring("Bearer ".length)
+        val crewEmail = jwtTokenProvider.getUserPk(actualToken)
+        val crew = crewService.findCrew(crewEmail)
+
+        if (candidateDetailService.retrieveMyCandidates(crew).isEmpty()) {
+            throw BaseException(BaseResponseCode.LIMIT_QUALIFICATION_NO_CANDIDATE_REGISTERED)
+        }
+
         val candidatesDto = candidateService.retrieveAllCandidates()
+
         return BaseResponseModel(HttpStatus.OK.value(), candidatesDto.map { candidateMapper.toModel(it) })
     }
 
     @Operation(summary = "Single인 소개팅 당사자 조회", security = [SecurityRequirement(name = "bearerAuth")])
     @GetMapping("/single")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
-    fun getSingleCandidates(): BaseResponseModel<List<CandidateInfoResponseModel>> {
+    fun getSingleCandidates(
+        @RequestHeader("Authorization") token: String,
+    ): BaseResponseModel<List<CandidateInfoResponseModel>> {
+        val actualToken = token.substring("Bearer ".length)
+        val crewEmail = jwtTokenProvider.getUserPk(actualToken)
+        val crew = crewService.findCrew(crewEmail)
+
+        if (candidateDetailService.retrieveMyCandidates(crew).isEmpty()) {
+            throw BaseException(BaseResponseCode.LIMIT_QUALIFICATION_NO_CANDIDATE_REGISTERED)
+        }
+
         val candidatesDto = candidateService.retrieveSingleCandidates()
         return BaseResponseModel(HttpStatus.OK.value(), candidatesDto.map { candidateMapper.toModel(it) })
     }
