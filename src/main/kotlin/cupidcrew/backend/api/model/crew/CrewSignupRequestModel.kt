@@ -8,6 +8,6 @@ data class CrewSignupRequestModel(
     var password: String,
     val mutualFriend: String,
     val company: String,
-    @JsonProperty("isApproved")
+    @get:JsonProperty("isApproved")
     val isApproved: Boolean?= false,
 )
