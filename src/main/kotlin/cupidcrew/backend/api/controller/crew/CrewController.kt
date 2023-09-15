@@ -34,7 +34,7 @@ class CrewController(
     @Operation(summary = "회원가입", security = [SecurityRequirement(name = "bearerAuth")])
     @PostMapping("/signup")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
-    fun signup(@RequestBody crewSignupRequestModel: CrewSignupRequestModel): BaseResponseModel<CrewSignupResponseModel> {
+    fun signup(@RequestBody crewSignupRequestModel: CrewSignupRequestModel): BaseResponseModel<String> {
         if (crewService.existsCrew(crewSignupRequestModel.email)) {
             throw BaseException(BaseResponseCode.DUPLICATE_EMAIL)
         }
@@ -43,7 +43,10 @@ class CrewController(
             this.m_password = passwordEncoder.encode(crewSignupRequestModel.password)
         }
 
-        return BaseResponseModel(HttpStatus.OK.value(), crewMapper.toModel(crewService.createCrew(crewDto)))
+        // 우선 저장함 isAprroved = 0 인 상태
+        crewService.createCrew(crewDto)
+
+        return BaseResponseModel(HttpStatus.OK.value(), "승인 심사 진행하겠습니다.")
     }
 
     @Operation(summary = "로그인", security = [SecurityRequirement(name = "bearerAuth")])
@@ -51,6 +54,10 @@ class CrewController(
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
     fun login(@RequestBody crewLoginReqestModel: CrewLoginRequestModel): BaseResponseModel<CrewLoginResponseModel> {
         val crew: CrewEntity = crewService.findCrew(crewLoginReqestModel.email)
+
+        if (crew.isApproved == 0) {
+            throw BaseException(BaseResponseCode.NOT_YET_APPROVED_AS_CREW)
+        }
 
         if (!passwordEncoder.matches(crewLoginReqestModel.password, crew.m_password)) {
             throw BaseException(BaseResponseCode.INVALID_PASSWORD)

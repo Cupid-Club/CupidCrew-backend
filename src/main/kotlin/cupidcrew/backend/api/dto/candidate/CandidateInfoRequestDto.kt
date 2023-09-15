@@ -16,5 +16,5 @@ data class CandidateInfoRequestDto(
     var images: MutableList<String>? = null,
     var popularity: Int? = 0,
     var opportunity: Int? = 0,
-    var crew: String? = null
+    var crew: String? = null,
 )

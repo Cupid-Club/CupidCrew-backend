@@ -6,4 +6,5 @@ data class CrewSignupRequestDto(
     var m_password: String? = "",
     val mutualFriend: String,
     val company: String,
+    val isApproved: Int?= 0,
 )
