@@ -28,7 +28,7 @@ class CrewEntity(
     val company: String,
 
     @Column(nullable = false)
-    val isApproved: Boolean,
+    val approved: Boolean,
 ) : BaseTime(), UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

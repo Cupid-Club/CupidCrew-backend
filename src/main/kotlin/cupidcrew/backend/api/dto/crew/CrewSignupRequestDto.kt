@@ -8,6 +8,5 @@ data class CrewSignupRequestDto(
     var m_password: String? = "",
     val mutualFriend: String,
     val company: String,
-    @get:JsonProperty("isApproved")
-    val isApproved: Boolean?= false,
+    val approved: Boolean?= false,
 )

@@ -43,7 +43,7 @@ class CrewController(
             this.m_password = passwordEncoder.encode(crewSignupRequestModel.password)
         }
 
-        // 우선 저장함 isAprroved = 0 인 상태
+        // 우선 저장함 aprroved = false 인 상태
         crewService.createCrew(crewDto)
 
         return BaseResponseModel(HttpStatus.OK.value(), "승인 심사 진행하겠습니다.")
@@ -55,7 +55,7 @@ class CrewController(
     fun login(@RequestBody crewLoginReqestModel: CrewLoginRequestModel): BaseResponseModel<CrewLoginResponseModel> {
         val crew: CrewEntity = crewService.findCrew(crewLoginReqestModel.email)
 
-        if (!crew.isApproved) {
+        if (!crew.approved) {
             throw BaseException(BaseResponseCode.NOT_YET_APPROVED_AS_CREW)
         }
 
