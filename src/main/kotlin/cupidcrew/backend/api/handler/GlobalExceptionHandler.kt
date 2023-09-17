@@ -15,4 +15,5 @@ class GlobalExceptionHandler {
             data = ex.message,
         )
     }
+
 }

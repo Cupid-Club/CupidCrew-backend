@@ -77,7 +77,7 @@ class CandidateController(
     fun addCandidates(
         @RequestHeader("Authorization") token: String,
         @RequestBody candidateInfoRequestModel: CandidateInfoRequestModel,
-    ): BaseResponseModel<CandidateInfoResponseModel> {
+    ): BaseResponseModel<Long> {
         if (candidateService.existsCandidateByPhoneNumber(candidateInfoRequestModel.phoneNumber)) {
             throw BaseException(BaseResponseCode.DUPLICATE_PHONE_NUMBER)
         }
@@ -92,7 +92,7 @@ class CandidateController(
 
         candidateDetailService.createCandidate(candidateDto)
 
-        return BaseResponseModel(HttpStatus.OK.value(), candidateMapper.toModel(candidateDto))
+        return BaseResponseModel(HttpStatus.OK.value(), candidateMapper.toModel(candidateDto).id)
     }
 
     @Operation(summary = "소개팅 남녀 사진 업로드", security = [SecurityRequirement(name = "bearerAuth")])

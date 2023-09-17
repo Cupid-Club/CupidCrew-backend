@@ -9,6 +9,7 @@ import cupidcrew.backend.api.model.crew.CrewLoginRequestModel
 import cupidcrew.backend.api.model.crew.CrewLoginResponseModel
 import cupidcrew.backend.api.model.crew.CrewSignupRequestModel
 import cupidcrew.backend.api.model.crew.CrewSignupResponseModel
+import cupidcrew.backend.api.security.JwtTokenProvider
 import cupidcrew.backend.api.service.crew.CrewService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -17,16 +18,14 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 // @PreAuthorize("hasAnyAuthority('ROLE_DASHBOARD')")
 @Tag(name = "[Crew]", description = "회원가입 및 로그인")
 @RestController
 @RequestMapping("/crew")
 class CrewController(
+    private val jwtTokenProvider: JwtTokenProvider,
     private val crewService: CrewService,
     private val passwordEncoder: PasswordEncoder,
     private val crewMapper: CrewMapper,
@@ -66,5 +65,17 @@ class CrewController(
         val crewDto = crewMapper.toDto(crewLoginReqestModel)
 
         return BaseResponseModel(HttpStatus.OK.value(), CrewLoginResponseModel(crewService.login(crewDto)))
+    }
+
+    @Operation(summary = "토큰 유효성 검사", security = [SecurityRequirement(name = "bearerAuth")])
+    @PostMapping("/validate")
+    @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
+    fun validate(@RequestHeader("Authorization") token: String): BaseResponseModel<Boolean> {
+        val actualToken = token.substring("Bearer ".length)
+
+        if (!jwtTokenProvider.validateToken(actualToken)) {
+            throw BaseException(BaseResponseCode.TOKEN_EXPIRED)
+        }
+        return BaseResponseModel(HttpStatus.OK.value(), true)
     }
 }
