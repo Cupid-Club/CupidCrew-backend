@@ -90,9 +90,7 @@ class CandidateController(
 
         val candidateDto = candidateMapper.toDto(candidateInfoRequestModelWithCrewId)
 
-        candidateDetailService.createCandidate(candidateDto)
-
-        return BaseResponseModel(HttpStatus.OK.value(), candidateMapper.toModel(candidateDto).id)
+        return BaseResponseModel(HttpStatus.OK.value(), candidateMapper.toModel(candidateDetailService.createCandidate(candidateDto)).id)
     }
 
     @Operation(summary = "소개팅 남녀 사진 업로드", security = [SecurityRequirement(name = "bearerAuth")])

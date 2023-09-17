@@ -20,9 +20,7 @@ class CandidateDetailService(
 
     fun createCandidate(candidateDto: CandidateInfoRequestDto): CandidateInfoRequestDto {
         val candidateEntity = candidateMapper.toEntity(candidateDto)
-        candidateRepository.save(candidateEntity)
-
-        return candidateMapper.toDto(candidateEntity)
+        return candidateMapper.toDto(candidateRepository.save(candidateEntity))
     }
 
     fun reviseCandidate(candidateDto: CandidateInfoRequestDto): CandidateInfoRequestDto {
