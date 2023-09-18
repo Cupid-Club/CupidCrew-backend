@@ -8,16 +8,20 @@ server:
     max-http-form-post-size: 100MB
 
 spring:
+  security:
+    user:
+      name: "admin"
+      password: "zofht11!!"
   servlet:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
 
   datasource:
-    url : jdbc:mariadb://localhost:3306/cupidcrew
+    url : jdbc:mariadb://0.0.0.0:3306/cupidcrew
     driver-class-name: org.mariadb.jdbc.Driver
     username: root
-    password: 1234
+    password: zofht11!!
   jpa:
     hibernate:
       dialect: org.hibernate.dialect.MariaDB103Dialect

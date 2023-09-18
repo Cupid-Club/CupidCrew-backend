@@ -23,10 +23,14 @@ http://localhost:8080/swagger-ui/index.html
     docker run -d --name mariadb -e MYSQL_ROOT_PASSWORD=1234 -e MYSQL_DATABASE=cupidcrew -e MYSQL_USER=ivy -e MYSQL_PASSWORD=1234 -p 3306:3306 mariadb/server:latest
     ````
     ````
-    docker exec -it mariadb /bin/bash
-    ````
-    ````
-    apt-get update && apt-get install mariadb-client -y
+    // 위에대로 안되면!!
+    1. docker run -d --name mariadb -e MYSQL_ROOT_PASSWORD=1234 -e MYSQL_DATABASE=cupidcrew -p 3306:3306 mariadb/server:latest
+    2. docker exec -it mariadb /bin/bash
+    3. 
+    - docker exec -it mariadb mysql -uroot -p1234
+    - SELECT user,authentication_string,plugin,host FROM mysql.user;
+    - DROP USER 'root'@'localhost';
+    - SET PASSWORD FOR 'root'@'%' = PASSWORD('zofht11!!');
     ````
 
 - minio
@@ -63,3 +67,8 @@ http://localhost:8080/swagger-ui/index.html
 - git pull, start-cupidcrew.sh 등 섞어서 배포 자동화 파일 작성
 - deploy.sh 작성
 - swagger: http://3.39.66.26:8080/swagger-ui/index.html
+- db 확인하기
+  ````
+  docker exec -it mariadb /bin/bash
+  mariab -uroot -p => pwd: zofht11!!
+  ````
