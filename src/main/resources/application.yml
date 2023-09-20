@@ -3,7 +3,7 @@ project:
   version: 1.0
 
 server:
-  port: 8080
+  port: 1111
   tomcat:
     max-http-form-post-size: 100MB
 
@@ -18,7 +18,7 @@ spring:
       max-request-size: 100MB
 
   datasource:
-    url : jdbc:mariadb://0.0.0.0:3306/cupidcrew
+    url : jdbc:mariadb://0.0.0.0:3306/cupidcrew?createDatabaseIfNotExist=true
     driver-class-name: org.mariadb.jdbc.Driver
     username: root
     password: zofht11!!
@@ -28,7 +28,7 @@ spring:
       show_sql: true
       format_sql: true
       use_sql_comments: true
-      ddl-auto: update # create, update, validate
+      ddl-auto: create # create, update, validate
   springdoc:
     swagger-ui:
       tryItOutEnabled: true

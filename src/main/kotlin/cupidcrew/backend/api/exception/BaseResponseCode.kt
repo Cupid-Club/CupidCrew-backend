@@ -9,5 +9,6 @@ enum class BaseResponseCode(val code: Int, val message: String) {
     NOT_YET_APPROVED_AS_CREW(400, "Not yet approved as crew"),
     LIMIT_QUALIFICATION_NO_CANDIDATE_REGISTERED(400, "Register at least one candidate to get retrieve qualification"),
     TOKEN_EXPIRED(500, "Token has expired"),
+    BAD_CREDENTIALS(400, "Incorrect email or password")
     // ... 다른 코드들 ...
 }
