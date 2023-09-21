@@ -4,6 +4,7 @@ import cupidcrew.backend.api.dao.BaseTime
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import javax.persistence.*
 
@@ -28,7 +29,11 @@ class CrewEntity(
     val company: String,
 
     @Column(nullable = false)
-    val approved: Boolean,
+    var approved: Boolean,
+
+    @Column(nullable = false)
+    var role: SimpleGrantedAuthority,
+
 ) : BaseTime(), UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

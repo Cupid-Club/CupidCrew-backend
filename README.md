@@ -27,7 +27,7 @@ http://localhost:8080/swagger-ui/index.html
     1. docker run -d --name mariadb -e MYSQL_ROOT_PASSWORD=1234 -e MYSQL_DATABASE=cupidcrew -p 3306:3306 mariadb/server:latest
     2. docker exec -it mariadb /bin/bash
     3. 
-    - docker exec -it mariadb mysql -uroot -p1234
+    - mariadb -uroot -p1234
     - SELECT user,authentication_string,plugin,host FROM mysql.user;
     - DROP USER 'root'@'localhost';
     - SET PASSWORD FOR 'root'@'%' = PASSWORD('zofht11!!');

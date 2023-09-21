@@ -7,17 +7,16 @@ import cupidcrew.backend.api.exception.BaseException
 import cupidcrew.backend.api.exception.BaseResponseCode
 import cupidcrew.backend.api.mapper.crew.CrewMapper
 import cupidcrew.backend.api.repository.crew.CrewRepository
-import cupidcrew.backend.api.security.JwtTokenProvider
+import cupidcrew.backend.api.security.JwtTokenUtil
 import org.springframework.stereotype.Service
 
 @Service
 class CrewService(
     private val crewRepository: CrewRepository,
-    private val jwtTokenProvider: JwtTokenProvider,
     private val crewMapper: CrewMapper,
 ) {
 
-    fun findCrew(email: String): CrewEntity {
+    fun findCrewByEmail(email: String): CrewEntity {
         return crewRepository.findByEmail(email) ?: throw BaseException(BaseResponseCode.CREW_NOT_FOUND)
     }
 
@@ -32,7 +31,7 @@ class CrewService(
         return crewMapper.toDto(crewEntity)
     }
 
-    fun login(crewDto: CrewLoginRequestDto): String {
-        return jwtTokenProvider.createToken(crewDto.email)
-    }
+//    fun login(crewDto: CrewLoginRequestDto): String {
+//        return jwtTokenUtil.generateToken(crewDto.email)
+//    }
 }

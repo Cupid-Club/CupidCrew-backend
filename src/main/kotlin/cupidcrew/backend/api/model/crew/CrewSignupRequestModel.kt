@@ -1,6 +1,7 @@
 package cupidcrew.backend.api.model.crew
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 
 data class CrewSignupRequestModel(
     val name: String,
@@ -8,5 +9,4 @@ data class CrewSignupRequestModel(
     var password: String,
     val mutualFriend: String,
     val company: String,
-    val approved: Boolean,
 )

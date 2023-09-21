@@ -6,7 +6,7 @@ import cupidcrew.backend.api.mapper.candidate.CandidateMapper
 import cupidcrew.backend.api.model.BaseResponseModel
 import cupidcrew.backend.api.model.candidate.CandidateInfoRequestModel
 import cupidcrew.backend.api.model.candidate.CandidateInfoResponseModel
-import cupidcrew.backend.api.security.JwtTokenProvider
+import cupidcrew.backend.api.security.JwtTokenUtil
 import cupidcrew.backend.api.service.candidate.CandidateDetailService
 import cupidcrew.backend.api.service.candidate.CandidateService
 import cupidcrew.backend.api.service.crew.CrewService
@@ -26,7 +26,7 @@ class CandidateDetailController(
     private val candidateDetailService: CandidateDetailService,
     private val crewService: CrewService,
     private val candidateMapper: CandidateMapper,
-    private val jwtTokenProvider: JwtTokenProvider,
+    private val jwtTokenUtil:  JwtTokenUtil,
 ) {
     @Operation(summary = "나의 소개팅 당사자 조회", security = [SecurityRequirement(name = "bearerAuth")])
     @GetMapping("/my")
@@ -35,8 +35,8 @@ class CandidateDetailController(
         @RequestHeader("Authorization") token: String,
     ): BaseResponseModel<List<CandidateInfoResponseModel>> {
         val actualToken = token.substring("Bearer ".length)
-        val crewEmail = jwtTokenProvider.getUserPk(actualToken)
-        val crew = crewService.findCrew(crewEmail)
+        val crewEmail = jwtTokenUtil.extractUsername(actualToken)
+        val crew = crewService.findCrewByEmail(crewEmail)
 
         val candidatesDto = candidateDetailService.retrieveMyCandidates(crew)
 

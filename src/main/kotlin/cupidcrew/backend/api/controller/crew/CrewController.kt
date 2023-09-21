@@ -6,10 +6,10 @@ import cupidcrew.backend.api.exception.BaseResponseCode
 import cupidcrew.backend.api.mapper.crew.CrewMapper
 import cupidcrew.backend.api.model.BaseResponseModel
 import cupidcrew.backend.api.model.crew.CrewLoginRequestModel
-import cupidcrew.backend.api.model.crew.CrewLoginResponseModel
 import cupidcrew.backend.api.model.crew.CrewSignupRequestModel
-import cupidcrew.backend.api.model.crew.CrewSignupResponseModel
-import cupidcrew.backend.api.security.JwtTokenProvider
+import cupidcrew.backend.api.security.JwtTokenUtil
+import cupidcrew.backend.api.service.admin.BlacklistTokenService
+import cupidcrew.backend.api.service.admin.ProjectUserDetailsService
 import cupidcrew.backend.api.service.crew.CrewService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 
@@ -25,11 +26,14 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/crew")
 class CrewController(
-    private val jwtTokenProvider: JwtTokenProvider,
+    private val jwtTokenUtil: JwtTokenUtil,
     private val crewService: CrewService,
     private val passwordEncoder: PasswordEncoder,
     private val crewMapper: CrewMapper,
+    private val userDetailsService: ProjectUserDetailsService,
+    private val blacklistTokenService: BlacklistTokenService
 ) {
+
     @Operation(summary = "회원가입", security = [SecurityRequirement(name = "bearerAuth")])
     @PostMapping("/signup")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
@@ -40,6 +44,8 @@ class CrewController(
 
         val crewDto = crewMapper.toDto(crewSignupRequestModel).apply {
             this.m_password = passwordEncoder.encode(crewSignupRequestModel.password)
+            this.approved = true
+            this.role = "ROLE_CREW"
         }
 
         // 우선 저장함 aprroved = false 인 상태
@@ -51,8 +57,8 @@ class CrewController(
     @Operation(summary = "로그인", security = [SecurityRequirement(name = "bearerAuth")])
     @PostMapping("/login")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
-    fun login(@RequestBody crewLoginReqestModel: CrewLoginRequestModel): BaseResponseModel<CrewLoginResponseModel> {
-        val crew: CrewEntity = crewService.findCrew(crewLoginReqestModel.email)
+    fun login(@RequestBody crewLoginReqestModel: CrewLoginRequestModel): BaseResponseModel<String> {
+        val crew: CrewEntity = crewService.findCrewByEmail(crewLoginReqestModel.email)
 
         if (!crew.approved) {
             throw BaseException(BaseResponseCode.NOT_YET_APPROVED_AS_CREW)
@@ -62,20 +68,19 @@ class CrewController(
             throw BaseException(BaseResponseCode.INVALID_PASSWORD)
         }
 
-        val crewDto = crewMapper.toDto(crewLoginReqestModel)
+        val userDetails = userDetailsService.loadUserByUsername(crew.email)
 
-        return BaseResponseModel(HttpStatus.OK.value(), CrewLoginResponseModel(crewService.login(crewDto)))
+        return BaseResponseModel(HttpStatus.OK.value(), jwtTokenUtil.generateToken(userDetails))
     }
 
-    @Operation(summary = "토큰 유효성 검사", security = [SecurityRequirement(name = "bearerAuth")])
-    @PostMapping("/validate")
+    @Operation(summary = "로그아웃", security = [SecurityRequirement(name = "bearerAuth")])
+    @PostMapping("/logout")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
-    fun validate(@RequestHeader("Authorization") token: String): BaseResponseModel<Boolean> {
-        val actualToken = token.substring("Bearer ".length)
-
-        if (!jwtTokenProvider.validateToken(actualToken)) {
-            throw BaseException(BaseResponseCode.TOKEN_EXPIRED)
-        }
-        return BaseResponseModel(HttpStatus.OK.value(), true)
+    fun logout(@RequestHeader("Authorization") token: String): BaseResponseModel<String> {
+        val token = token.substring(7)
+        blacklistTokenService.blacklist(token)
+        return BaseResponseModel(HttpStatus.OK.value(), "Successfully logged out")
     }
+
+
 }
