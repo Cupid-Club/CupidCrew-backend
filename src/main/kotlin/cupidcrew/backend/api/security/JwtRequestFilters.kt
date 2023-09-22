@@ -25,9 +25,8 @@ class JwtRequestFilters(
     @Throws(IOException::class, ServletException::class)
     override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
         val headerValue = (request as HttpServletRequest).getHeader("Authorization")
-        println("Header Value: $headerValue")
+
         val token: String? = headerValue?.substring(7)
-        // 유효한 토큰인지 확인합니다.
 
         if (token != null) {
             if (blacklistTokenService.isBlacklisted(token)) {

@@ -17,7 +17,7 @@ class ProjectUserDetailsService(
         val authorities: MutableSet<SimpleGrantedAuthority> = mutableSetOf()
 
         when {
-            email == "aisdbrud@naver.com" -> {
+            email == "admin@naver.com" -> {
                 authorities.add(SimpleGrantedAuthority("ROLE_CREW"))
                 authorities.add(SimpleGrantedAuthority("ROLE_ADMIN"))
             }

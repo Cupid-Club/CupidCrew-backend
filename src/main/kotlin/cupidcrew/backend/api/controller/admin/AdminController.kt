@@ -1,12 +1,15 @@
 package cupidcrew.backend.api.controller.admin
 
+import cupidcrew.backend.api.dao.crew.CrewEntity
 import cupidcrew.backend.api.exception.BaseException
 import cupidcrew.backend.api.exception.BaseResponseCode
 import cupidcrew.backend.api.mapper.candidate.CandidateMapper
 import cupidcrew.backend.api.model.BaseResponseModel
 import cupidcrew.backend.api.model.authentication.AuthenticationRequestModel
 import cupidcrew.backend.api.model.candidate.CandidateInfoResponseModel
+import cupidcrew.backend.api.model.crew.CrewEmailRequestModel
 import cupidcrew.backend.api.security.JwtTokenUtil
+import cupidcrew.backend.api.service.admin.AdminService
 import cupidcrew.backend.api.service.candidate.CandidateDetailService
 import cupidcrew.backend.api.service.candidate.CandidateService
 import cupidcrew.backend.api.service.candidate.FileStorageService
@@ -29,30 +32,20 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/admin")
 class AdminController(
         private val crewService: CrewService,
-        private val candidateService: CandidateService,
-        private val candidateDetailService: CandidateDetailService,
-        private val candidateMapper: CandidateMapper,
-        private val jwtTokenUtil: JwtTokenUtil,
-        private val fileStorageService: FileStorageService,
+        private val adminService: AdminService,
 
         ) {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @Operation(summary = "회원가입을 위한 승인 절차", security = [SecurityRequirement(name = "bearerAuth")])
-    @GetMapping("/")
+    @PostMapping("/changeApprovedStatus")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
-    fun retrieveAllCandidates(
-            @RequestHeader("Authorization") token: String,
-    ): BaseResponseModel<List<CandidateInfoResponseModel>> {
-        val actualToken = token.substring("Bearer ".length)
-        val crewEmail = jwtTokenUtil.extractUsername(actualToken)
-        val crew = crewService.findCrewByEmail(crewEmail)
+    fun changeApprovedStatus(
+            @RequestBody crewEmailRequestModel: CrewEmailRequestModel,
+    ) : BaseResponseModel<String> {
+        val crew: CrewEntity = crewService.findCrewByEmail(crewEmailRequestModel.email)
 
-        if (candidateDetailService.retrieveMyCandidates(crew).isEmpty()) {
-            throw BaseException(BaseResponseCode.LIMIT_QUALIFICATION_NO_CANDIDATE_REGISTERED)
-        }
+        adminService.changeApprovedStatus(crew.crewid!!)
 
-        val candidatesDto = candidateService.retrieveAllCandidates()
-
-        return BaseResponseModel(HttpStatus.OK.value(), candidatesDto.map { candidateMapper.toModel(it) })
+        return BaseResponseModel(HttpStatus.OK.value(), "This person is approved as crew")
     }
 }

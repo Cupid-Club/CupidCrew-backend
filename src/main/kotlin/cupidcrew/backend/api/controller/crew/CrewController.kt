@@ -43,7 +43,7 @@ class CrewController(
 
         val crewDto = crewMapper.toDto(crewSignupRequestModel).apply {
             this.m_password = passwordEncoder.encode(crewSignupRequestModel.password)
-            this.approved = true
+            this.approved = crewSignupRequestModel.email == "admin@naver.com"
             this.role = "ROLE_CREW"
         }
 
@@ -76,8 +76,7 @@ class CrewController(
     @PostMapping("/logout")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
     fun logout(@RequestHeader("Authorization") token: String): BaseResponseModel<String> {
-        val token = token.substring(7)
-        blacklistTokenService.blacklist(token)
+        blacklistTokenService.blacklist(token.substring(7))
         return BaseResponseModel(HttpStatus.OK.value(), "Successfully logged out")
     }
 

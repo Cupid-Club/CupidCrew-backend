@@ -1,3 +1,7 @@
 package cupidcrew.backend.api.repository.crew
 
-interface CrewRepositoryCustom
+interface CrewRepositoryCustom {
+
+    fun changeBooleanStatus(crewId: Long, fieldName: String, value: Boolean)
+
+}
