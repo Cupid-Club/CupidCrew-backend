@@ -17,7 +17,7 @@ spring:
     url : jdbc:mariadb://localhost:3306/cupidcrew
     driver-class-name: org.mariadb.jdbc.Driver
     username: root
-    password: 1234
+    password: zofht11!!
   jpa:
     hibernate:
       dialect: org.hibernate.dialect.MariaDB103Dialect
