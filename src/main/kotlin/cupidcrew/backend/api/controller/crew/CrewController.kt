@@ -21,7 +21,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 
-// @PreAuthorize("hasAnyAuthority('ROLE_DASHBOARD')")
 @Tag(name = "[Crew]", description = "회원가입 및 로그인")
 @RestController
 @RequestMapping("/crew")
