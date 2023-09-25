@@ -8,4 +8,6 @@ interface CrewJpaRepository : JpaRepository<CrewEntity, Long> {
 
     fun existsByEmail(email: String): Boolean
 
+    fun findByApprovedIsFalse(): List<CrewEntity>
+
 }

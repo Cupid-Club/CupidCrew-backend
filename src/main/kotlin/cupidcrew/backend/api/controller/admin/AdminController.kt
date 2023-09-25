@@ -1,18 +1,11 @@
 package cupidcrew.backend.api.controller.admin
 
 import cupidcrew.backend.api.dao.crew.CrewEntity
-import cupidcrew.backend.api.exception.BaseException
-import cupidcrew.backend.api.exception.BaseResponseCode
-import cupidcrew.backend.api.mapper.candidate.CandidateMapper
+import cupidcrew.backend.api.mapper.crew.CrewMapper
 import cupidcrew.backend.api.model.BaseResponseModel
-import cupidcrew.backend.api.model.authentication.AuthenticationRequestModel
-import cupidcrew.backend.api.model.candidate.CandidateInfoResponseModel
 import cupidcrew.backend.api.model.crew.CrewEmailRequestModel
-import cupidcrew.backend.api.security.JwtTokenUtil
+import cupidcrew.backend.api.model.crew.CrewSignupResponseModel
 import cupidcrew.backend.api.service.admin.AdminService
-import cupidcrew.backend.api.service.candidate.CandidateDetailService
-import cupidcrew.backend.api.service.candidate.CandidateService
-import cupidcrew.backend.api.service.candidate.FileStorageService
 import cupidcrew.backend.api.service.crew.CrewService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -21,10 +14,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.BadCredentialsException
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.web.bind.annotation.*
 
 @Tag(name = "[ADMIN]", description = "관리자용 api들")
@@ -33,6 +22,7 @@ import org.springframework.web.bind.annotation.*
 class AdminController(
         private val crewService: CrewService,
         private val adminService: AdminService,
+        private val crewMapper: CrewMapper,
 
         ) {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
@@ -48,4 +38,18 @@ class AdminController(
 
         return BaseResponseModel(HttpStatus.OK.value(), "This person is approved as crew")
     }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @Operation(summary = "회원가입 승인 기다리는 사람들 리스트 보기", security = [SecurityRequirement(name = "bearerAuth")])
+    @GetMapping("/ApprovedWaiting")
+    @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
+    fun retrieveApprovedWaitingList() : BaseResponseModel<List<CrewSignupResponseModel>> {
+
+        val crewsDto = adminService.retrieveNotApprovedCrew()
+
+        return BaseResponseModel(HttpStatus.OK.value(), crewsDto.map { crewMapper.toModel(it) })
+    }
+
+
+
 }

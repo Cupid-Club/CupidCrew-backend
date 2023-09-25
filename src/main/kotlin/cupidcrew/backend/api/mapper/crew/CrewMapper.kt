@@ -1,9 +1,8 @@
 package cupidcrew.backend.api.mapper.crew
 
 import cupidcrew.backend.api.dao.crew.CrewEntity
-import cupidcrew.backend.api.dto.crew.CrewLoginRequestDto
 import cupidcrew.backend.api.dto.crew.CrewSignupRequestDto
-import cupidcrew.backend.api.model.crew.CrewLoginRequestModel
+import cupidcrew.backend.api.dto.crew.CrewSignupResponseDto
 import cupidcrew.backend.api.model.crew.CrewSignupRequestModel
 import cupidcrew.backend.api.model.crew.CrewSignupResponseModel
 import org.mapstruct.*
@@ -27,8 +26,8 @@ abstract class CrewMapper {
 
     @Named("mapRoleToString")
     fun mapRoleToString(role: SimpleGrantedAuthority): String = role.authority
-//    abstract fun toModel(dto: CrewSignupRequestDto): CrewSignupResponseModel
-//
-//    // login
-//    abstract fun toDto(model: CrewLoginRequestModel): CrewLoginRequestDto
+    
+    abstract fun toModel(dto: CrewSignupRequestDto) : CrewSignupResponseModel
+
+
 }
