@@ -22,7 +22,11 @@ class FileStorageService(private val minioClient: MinioClient) {
 
         imageList.forEach { file ->
             val inputStream: InputStream = file.inputStream
-            val objectName = "${file.originalFilename}-${Instant.now().toEpochMilli()}"
+            
+            val originalFilename = file.originalFilename ?: "file"
+            val extension = originalFilename.substringAfterLast(".", "")
+            val nameWithoutExtension = originalFilename.substringBeforeLast(".")
+            val objectName = "$nameWithoutExtension-${Instant.now().toEpochMilli()}.$extension"
 
             minioClient.putObject(
                 PutObjectArgs.builder()
