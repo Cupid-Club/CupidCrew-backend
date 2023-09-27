@@ -46,7 +46,7 @@ class JwtRequestFilters(
             } catch (e: Exception) {
                 httpServletResponse.status = HttpServletResponse.SC_UNAUTHORIZED
                 httpServletResponse.contentType = MediaType.APPLICATION_JSON_VALUE
-                httpServletResponse.writer.write("Invalid token or user")
+                httpServletResponse.writer.write("{\"message\":\"Invalid token or user\"}")
                 return
             }
         }
