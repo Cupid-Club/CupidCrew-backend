@@ -29,4 +29,14 @@ class CrewRepositoryCustomImpl(
                 .execute()
     }
 
+    @Transactional
+    override fun resetPassword(crewId: Long, encodedNewPassword: String) {
+        val crew = QCrewEntity.crewEntity
+        queryFactory
+            .update(crew)
+            .set(crew.m_password, encodedNewPassword)
+            .where(crew.crewid.eq(crewId))
+            .execute()
+    }
+
 }

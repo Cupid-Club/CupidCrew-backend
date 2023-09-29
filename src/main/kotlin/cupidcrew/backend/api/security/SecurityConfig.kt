@@ -65,7 +65,7 @@ class SecurityConfig(
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 사용 안함
             .and()
             .authorizeRequests() // 요청에 대한 사용권한 체크
-            .antMatchers("/crew/signup/**", "/crew/login/**", "/crew/logout/**").permitAll() // 로그인, 회원가입은 누구나 접근 가능
+            .antMatchers("/crew/signup/**", "/crew/login/**", "/crew/logout/**", "/crew/find/**","/crew/reset/**").permitAll() // 로그인, 회원가입은 누구나 접근 가능
             .antMatchers("/admin/**").hasRole("ADMIN")
             .antMatchers("/crew/**", "/candidate/**").hasAnyRole("CREW", "ADMIN")
             .and()

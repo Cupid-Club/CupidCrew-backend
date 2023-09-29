@@ -1,12 +1,12 @@
 package cupidcrew.backend.api.controller.crew
 
 import cupidcrew.backend.api.dao.crew.CrewEntity
+import cupidcrew.backend.api.dto.crew.CrewFindIdResponseDto
 import cupidcrew.backend.api.exception.BaseException
 import cupidcrew.backend.api.exception.BaseResponseCode
 import cupidcrew.backend.api.mapper.crew.CrewMapper
 import cupidcrew.backend.api.model.BaseResponseModel
-import cupidcrew.backend.api.model.crew.CrewLoginRequestModel
-import cupidcrew.backend.api.model.crew.CrewSignupRequestModel
+import cupidcrew.backend.api.model.crew.*
 import cupidcrew.backend.api.security.JwtTokenUtil
 import cupidcrew.backend.api.service.admin.BlacklistTokenService
 import cupidcrew.backend.api.service.admin.ProjectUserDetailsService
@@ -80,5 +80,26 @@ class CrewController(
         return BaseResponseModel(HttpStatus.OK.value(), "Successfully logged out")
     }
 
+
+    @Operation(summary = "아이디(email) 찾기)", security = [SecurityRequirement(name = "bearerAuth")])
+    @PostMapping("/find/id")
+    @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
+    fun findId(@RequestBody crewFindIdRequestModel: CrewFindIdRequestModel): BaseResponseModel<List<CrewFindIdResponseDto>> {
+        val crewDtoList = crewService.findCrewByNameAndMutualFriend(crewFindIdRequestModel.name, crewFindIdRequestModel.mutualFriend)
+        return BaseResponseModel(HttpStatus.OK.value(), crewDtoList)
+    }
+
+    @Operation(summary = "패스워드 초기화", security = [SecurityRequirement(name = "bearerAuth")])
+    @PostMapping("/reset/password")
+    @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
+    fun resetPassword(@RequestBody crewResetPasswordRequestModel: CrewResetPasswordRequestModel): BaseResponseModel<String> {
+        val crewEntity = crewService.findCrewByNameAndEmail(crewResetPasswordRequestModel.name, crewResetPasswordRequestModel.email)
+
+        val encodedNewPassword = passwordEncoder.encode(crewResetPasswordRequestModel.newPassword)
+
+        crewService.resetPassword(crewEntity.crewid!!, encodedNewPassword)
+
+        return BaseResponseModel(HttpStatus.OK.value(), "Successfully password is reset!")
+    }
 
 }

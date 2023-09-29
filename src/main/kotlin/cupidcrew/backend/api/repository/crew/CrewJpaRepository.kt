@@ -10,4 +10,8 @@ interface CrewJpaRepository : JpaRepository<CrewEntity, Long> {
 
     fun findByApprovedIsFalse(): List<CrewEntity>
 
+    fun findByNameAndMutualFriend(name: String, mutualFriend: String): List<CrewEntity>
+
+    fun findByNameAndEmail(name: String, email: String): CrewEntity?
+
 }

@@ -1,6 +1,7 @@
 package cupidcrew.backend.api.service.crew
 
 import cupidcrew.backend.api.dao.crew.CrewEntity
+import cupidcrew.backend.api.dto.crew.CrewFindIdResponseDto
 import cupidcrew.backend.api.dto.crew.CrewLoginRequestDto
 import cupidcrew.backend.api.dto.crew.CrewSignupRequestDto
 import cupidcrew.backend.api.exception.BaseException
@@ -20,6 +21,17 @@ class CrewService(
         return crewRepository.findByEmail(email) ?: throw BaseException(BaseResponseCode.CREW_NOT_FOUND)
     }
 
+    fun findCrewByNameAndMutualFriend(name: String, mutualFriend: String): List<CrewFindIdResponseDto> {
+        val crewEntityList = crewRepository.findByNameAndMutualFriend(name, mutualFriend)
+        if (crewEntityList.isEmpty()) throw BaseException(BaseResponseCode.CREW_NOT_FOUND)
+        return crewEntityList.map { crewMapper.toDtoFindId(it) }
+    }
+
+
+    fun findCrewByNameAndEmail(name: String, email: String): CrewEntity {
+        return crewRepository.findByNameAndEmail(name, email) ?: throw BaseException(BaseResponseCode.CREW_NOT_FOUND)
+    }
+
     fun existsCrew(email: String): Boolean {
         return crewRepository.existsByEmail(email)
     }
@@ -31,7 +43,8 @@ class CrewService(
         return crewMapper.toDto(crewEntity)
     }
 
-//    fun login(crewDto: CrewLoginRequestDto): String {
-//        return jwtTokenUtil.generateToken(crewDto.email)
-//    }
+    fun resetPassword(crewId: Long, encodedNewPassword: String) {
+        return crewRepository.resetPassword(crewId, encodedNewPassword)
+    }
+
 }
