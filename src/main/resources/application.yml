@@ -3,7 +3,7 @@ project:
   version: 1.0
 
 server:
-  port: 1111
+  port: 8080
   tomcat:
     max-http-form-post-size: 100MB
 

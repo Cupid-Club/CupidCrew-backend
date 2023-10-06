@@ -48,6 +48,13 @@ dependencies {
     annotationProcessor(group = "com.querydsl", name = "querydsl-apt", classifier = "jpa")
     implementation("org.mapstruct:mapstruct:1.5.3.Final")
     kapt("org.mapstruct:mapstruct-processor:1.5.3.Final")
+    // websocket
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
+    implementation("org.webjars:webjars-locator-core")
+    implementation("org.webjars:sockjs-client:1.0.2")
+    implementation("org.webjars:stomp-websocket:2.3.3")
+    implementation("org.webjars:bootstrap:3.3.7")
+    implementation("org.webjars:jquery:3.1.1-1")
     // log
 //    implementation("org.springframework.boot:spring-boot-starter-log4j2") // log4j2
 //    implementation("com.lmax:disruptor:3.4.4") // -Dlog4j2.contextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector
