@@ -81,7 +81,7 @@ class CrewController(
     }
 
 
-    @Operation(summary = "아이디(email) 찾기)", security = [SecurityRequirement(name = "bearerAuth")])
+    @Operation(summary = "아이디(email) 찾기", security = [SecurityRequirement(name = "bearerAuth")])
     @PostMapping("/find/id")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
     fun findId(@RequestBody crewFindIdRequestModel: CrewFindIdRequestModel): BaseResponseModel<List<CrewFindIdResponseDto>> {
@@ -90,7 +90,7 @@ class CrewController(
     }
 
     @Operation(summary = "패스워드 초기화", security = [SecurityRequirement(name = "bearerAuth")])
-    @PostMapping("/reset/password")
+    @PostMapping("/find/password/reset")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
     fun resetPassword(@RequestBody crewResetPasswordRequestModel: CrewResetPasswordRequestModel): BaseResponseModel<String> {
         val crewEntity = crewService.findCrewByNameAndEmail(crewResetPasswordRequestModel.name, crewResetPasswordRequestModel.email)
