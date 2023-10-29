@@ -9,6 +9,7 @@ data class CrewSignupRequestDto(
     var m_password: String? = "",
     val mutualFriend: String,
     val company: String,
+    val fireBaseToken: String,
     var approved: Boolean? = true,
     var role: String? = "ROLE_USER",
 )

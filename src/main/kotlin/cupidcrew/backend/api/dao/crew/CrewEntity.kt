@@ -29,6 +29,9 @@ class CrewEntity(
     val company: String,
 
     @Column(nullable = false)
+    val fireBaseToken: String,
+
+    @Column(nullable = false)
     var approved: Boolean,
 
     @Column(nullable = false)

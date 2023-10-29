@@ -3,6 +3,7 @@ package cupidcrew.backend.api.mapper.crew
 import cupidcrew.backend.api.dao.crew.CrewEntity
 import cupidcrew.backend.api.dto.crew.CrewFindIdResponseDto
 import cupidcrew.backend.api.dto.crew.CrewSignupRequestDto
+import cupidcrew.backend.api.model.crew.CrewFireBaseTokenResponseModel
 import cupidcrew.backend.api.model.crew.CrewSignupRequestModel
 import cupidcrew.backend.api.model.crew.CrewSignupResponseModel
 import org.mapstruct.*
@@ -30,5 +31,7 @@ abstract class CrewMapper {
     abstract fun toModel(dto: CrewSignupRequestDto) : CrewSignupResponseModel
 
     abstract fun toDtoFindId(entity: CrewEntity) : CrewFindIdResponseDto
+
+    abstract fun toModelFireBaseToken(dto: CrewSignupRequestDto) : CrewFireBaseTokenResponseModel
 
 }

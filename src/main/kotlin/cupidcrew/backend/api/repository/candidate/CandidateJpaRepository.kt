@@ -11,4 +11,5 @@ interface CandidateJpaRepository : JpaRepository<CandidateEntity, Long> {
     fun existsByPhoneNumber(phoneNumber: String): Boolean
 
     fun findByCrew(crew: CrewEntity): List<CandidateEntity>
+
 }

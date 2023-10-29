@@ -1,11 +1,14 @@
 package cupidcrew.backend.api.controller.candidate
 
+import cupidcrew.backend.api.dto.crew.CrewSignupRequestDto
 import cupidcrew.backend.api.exception.BaseException
 import cupidcrew.backend.api.exception.BaseResponseCode
 import cupidcrew.backend.api.mapper.candidate.CandidateMapper
+import cupidcrew.backend.api.mapper.crew.CrewMapper
 import cupidcrew.backend.api.model.BaseResponseModel
 import cupidcrew.backend.api.model.candidate.CandidateInfoRequestModel
 import cupidcrew.backend.api.model.candidate.CandidateInfoResponseModel
+import cupidcrew.backend.api.model.crew.CrewFireBaseTokenResponseModel
 import cupidcrew.backend.api.security.JwtTokenUtil
 import cupidcrew.backend.api.service.candidate.CandidateDetailService
 import cupidcrew.backend.api.service.candidate.CandidateService
@@ -27,6 +30,7 @@ class CandidateDetailController(
     private val crewService: CrewService,
     private val candidateMapper: CandidateMapper,
     private val jwtTokenUtil:  JwtTokenUtil,
+    private val crewMapper: CrewMapper,
 ) {
     @Operation(summary = "나의 소개팅 당사자 조회", security = [SecurityRequirement(name = "bearerAuth")])
     @GetMapping("/my")
@@ -44,7 +48,7 @@ class CandidateDetailController(
     }
 
     @Operation(summary = "나의 소개팅 당사자 정보 수정", security = [SecurityRequirement(name = "bearerAuth")])
-    @PostMapping("/my/{candidateId}/revise")
+    @PutMapping("/my/{candidateId}/revise")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
     fun reviseMyCandidate(
         @PathVariable candidateId: Long,
@@ -105,4 +109,19 @@ class CandidateDetailController(
 
         return BaseResponseModel(HttpStatus.OK.value(), "opportunity+1")
     }
+
+    @Operation(summary = "소개팅 남녀 id로 소개팅 주선자 id 알아내기", security = [SecurityRequirement(name = "bearerAuth")])
+    @GetMapping("/other-crew/{candidateId}")
+    @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
+    fun getCrewIdBySelectedCandidateId(@PathVariable candidateId: Long): BaseResponseModel<CrewFireBaseTokenResponseModel> {
+        if (!candidateService.existsCandidateById(candidateId)) {
+            throw BaseException(BaseResponseCode.CANDIDATE_NOT_FOUND)
+        }
+
+        val crewDto = candidateDetailService.getCrewIdBySelectedCandidateId(candidateId)
+
+        return BaseResponseModel(HttpStatus.OK.value(), crewDto?.let { crewMapper.toModelFireBaseToken(it) })
+
+    }
+
 }
