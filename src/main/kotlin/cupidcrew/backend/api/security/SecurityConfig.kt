@@ -67,7 +67,7 @@ class SecurityConfig(
             .authorizeRequests() // 요청에 대한 사용권한 체크
             .antMatchers("/crew/signup/**", "/crew/login/**", "/crew/logout/**", "/crew/find/**","/crew/reset/**").permitAll() // 로그인, 회원가입은 누구나 접근 가능
             .antMatchers("/admin/**").hasRole("ADMIN")
-            .antMatchers("/crew/**", "/candidate/**").hasAnyRole("CREW", "ADMIN")
+            .antMatchers("/crew/**", "/candidate/**", "/matching/**").hasAnyRole("CREW", "ADMIN")
             .and()
             .addFilterBefore(JwtRequestFilters(jwtTokenUtil, blacklistTokenService, userDetailsService), UsernamePasswordAuthenticationFilter::class.java)
     }
