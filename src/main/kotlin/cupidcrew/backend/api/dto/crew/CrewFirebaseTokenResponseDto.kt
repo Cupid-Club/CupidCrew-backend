@@ -4,5 +4,5 @@ data class CrewFirebaseTokenResponseDto(
     val crewid: Long,
     val name: String,
     val email: String,
-    val fireBaseToken: String,
+    val firebaseToken: String,
 )

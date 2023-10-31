@@ -7,9 +7,11 @@ import cupidcrew.backend.api.model.BaseResponseModel
 import cupidcrew.backend.api.model.candidate.CandidateInfoResponseModel
 import cupidcrew.backend.api.model.matching.SendingHistoryRequestModel
 import cupidcrew.backend.api.model.matching.SendingHistoryResponseModel
+import cupidcrew.backend.api.model.notification.NotificationReceiverModel
 import cupidcrew.backend.api.service.candidate.CandidateService
 import cupidcrew.backend.api.service.crew.CrewService
 import cupidcrew.backend.api.service.matching.MatchingService
+import cupidcrew.backend.api.service.notification.NotificationService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -28,9 +30,18 @@ class MatchingController (
     private val candidateService: CandidateService,
     private val matchingService: MatchingService,
     private val matchingMapper: MatchingMapper,
+    private val notificationService: NotificationService,
 ) {
+    @Operation(summary = "crew에게 푸시알람 보내기", security = [SecurityRequirement(name = "bearerAuth")])
+    @PostMapping("/push-alarm")
+    fun sendNotificationToUser(@RequestBody notificationReceiverModel: NotificationReceiverModel): BaseResponseModel<String> {
+        notificationService.sendNotification(notificationReceiverModel.firebaseToken, notificationReceiverModel.message)
+        return BaseResponseModel(HttpStatus.OK.value(), "Notification sent!")
+
+    }
+
     @Operation(summary = "다른 소개팅 주선자에게 연락한 기록 남기기", security = [SecurityRequirement(name = "bearerAuth")])
-    @PostMapping("/send")
+    @PostMapping("/history")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
     fun remainSendingHistory(
         @RequestBody sendingHistoryRequestModel: SendingHistoryRequestModel
@@ -53,7 +64,9 @@ class MatchingController (
 
         val historyDto = matchingMapper.toDto(sendingHistoryRequestModel)
 
-        return BaseResponseModel(HttpStatus.OK.value(), matchingMapper.toModel(matchingService.createHistory(historyDto)))
+        val result =  matchingService.createHistory(historyDto)
+
+        return BaseResponseModel(HttpStatus.OK.value(), matchingMapper.toModel(result))
 
     }
 

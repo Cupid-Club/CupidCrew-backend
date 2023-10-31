@@ -10,26 +10,26 @@ import javax.persistence.*
 @DynamicInsert
 @Table(name = "matching")
 data class MatchingEntity(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
-
     @Column(name= "senderId", nullable = false)
-    var senderId: Long? = null,
+    val senderId: Long,
 
     @Column(name= "receiverId", nullable = false)
-    var receiverId: Long? = null,
+    val receiverId: Long,
 
     @Column(name= "senderCandidateId", nullable = false)
-    var senderCandidateId: Long? = null,
+    val senderCandidateId: Long,
 
     @Column(name= "receiverCandidateId", nullable = false)
-    var receiverCandidateId: Long? = null,
+    val receiverCandidateId: Long,
 
     @Column(name= "status", nullable = false)
-    var status: String,
+    var status: String? = "unchecked",
 
     @Column(name= "result", nullable = false)
-    var result: String,
+    var result: String? = "unmatched,"
 
-)
+) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long? = null
+}

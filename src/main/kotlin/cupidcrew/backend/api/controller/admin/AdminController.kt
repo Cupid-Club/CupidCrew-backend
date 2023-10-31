@@ -53,15 +53,4 @@ class AdminController(
         return BaseResponseModel(HttpStatus.OK.value(), crewsDto.map { crewMapper.toModel(it) })
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @Operation(summary = "crew에게 푸시알람 보내기", security = [SecurityRequirement(name = "bearerAuth")])
-    @PostMapping("/send")
-    fun sendNotificationToUser(@RequestBody notificationReceiverModel: NotificationReceiverModel): BaseResponseModel<String> {
-        notificationService.sendNotification(notificationReceiverModel.firebaseToken, notificationReceiverModel.message)
-        return BaseResponseModel(HttpStatus.OK.value(), "Notification sent!")
-
-    }
-
-
-
 }
