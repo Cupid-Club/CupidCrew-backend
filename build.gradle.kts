@@ -57,13 +57,15 @@ dependencies {
     // db
 //    runtimeOnly("com.h2database:h2")
     implementation("org.mariadb.jdbc:mariadb-java-client:3.1.2")
-//    runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
     implementation("io.minio:minio:8.4.2")
     // querydsl
     val querydslVersion = "5.0.0"
     implementation("com.querydsl:querydsl-jpa:$querydslVersion")
     kapt("com.querydsl:querydsl-apt:$querydslVersion:jpa")
     implementation("com.querydsl:querydsl-apt:$querydslVersion")
+    // FCM
+    implementation("com.google.firebase:firebase-admin:9.2.0")
+    implementation("com.google.api-client:google-api-client:2.0")
     // test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
