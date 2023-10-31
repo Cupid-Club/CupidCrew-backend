@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*
 
 @Tag(name = "[Candidates-detail]", description = "소개팅 각 당사자 관련 기능 api들")
 @RestController
-@RequestMapping("/candidates/")
+@RequestMapping("/candidates")
 class CandidateDetailController(
     private val candidateService: CandidateService,
     private val candidateDetailService: CandidateDetailService,
