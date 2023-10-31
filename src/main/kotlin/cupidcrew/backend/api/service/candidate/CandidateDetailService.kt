@@ -4,6 +4,7 @@ import cupidcrew.backend.api.dao.candidate.CandidateEntity
 import cupidcrew.backend.api.dao.crew.CrewEntity
 import cupidcrew.backend.api.dao.crew.QCrewEntity.crewEntity
 import cupidcrew.backend.api.dto.candidate.CandidateInfoRequestDto
+import cupidcrew.backend.api.dto.crew.CrewFirebaseTokenResponseDto
 import cupidcrew.backend.api.dto.crew.CrewSignupRequestDto
 import cupidcrew.backend.api.mapper.candidate.CandidateMapper
 import cupidcrew.backend.api.mapper.crew.CrewMapper
@@ -47,9 +48,9 @@ class CandidateDetailService(
         candidateRepository.increaseField(candidateId, "opportunity")
     }
 
-    fun getCrewIdBySelectedCandidateId(candidateId: Long): CrewSignupRequestDto? {
+    fun getCrewIdBySelectedCandidateId(candidateId: Long): CrewFirebaseTokenResponseDto? {
         val candidate = candidateRepository.findById(candidateId).orElse(null)
-        return candidate?.crew?.let { crewMapper.toDto(it) }
+        return candidate?.crew?.let { crewMapper.toDtoFirebaseToken(it) }
     }
 
 }

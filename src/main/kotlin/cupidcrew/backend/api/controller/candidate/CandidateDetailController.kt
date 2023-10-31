@@ -21,9 +21,9 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
-@Tag(name = "[Candidates-detail]", description = "소개팅 각 당사자 관련 기능 api들")
+@Tag(name = "[Candidate-detail]", description = "소개팅 각 당사자 관련 기능 api들")
 @RestController
-@RequestMapping("/candidates/")
+@RequestMapping("/candidate/")
 class CandidateDetailController(
     private val candidateService: CandidateService,
     private val candidateDetailService: CandidateDetailService,

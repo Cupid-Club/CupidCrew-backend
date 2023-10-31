@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
 @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-@Tag(name = "[Candidates]", description = "소개팅 당사자 정보 관련 api들")
+@Tag(name = "[Candidate]", description = "소개팅 당사자 정보 관련 api들")
 @RestController
-@RequestMapping("/candidates")
+@RequestMapping("/candidate")
 class CandidateController(
     private val crewService: CrewService,
     private val candidateService: CandidateService,

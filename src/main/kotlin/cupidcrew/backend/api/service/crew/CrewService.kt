@@ -16,7 +16,10 @@ class CrewService(
     private val crewRepository: CrewRepository,
     private val crewMapper: CrewMapper,
 ) {
+    fun existsById(id: Long): Boolean {
+        return crewRepository.existsById(id)
 
+    }
     fun findCrewByEmail(email: String): CrewEntity {
         return crewRepository.findByEmail(email) ?: throw BaseException(BaseResponseCode.CREW_NOT_FOUND)
     }
