@@ -68,8 +68,16 @@ http://localhost:8080/swagger-ui/index.html
 - git pull, start-cupidcrew.sh 등 섞어서 배포 자동화 파일 작성
 - deploy.sh 작성
 - swagger: http://3.39.66.26:8080/swagger-ui/index.html
-- db 확인하기
-  ````
-  docker exec -it mariadb /bin/bash
-  mariab -uroot -p => pwd: zofht11!!
-  ````
+  - db 확인하기
+    ````
+    docker exec -it mariadb /bin/bash
+    mariab -uroot -p => pwd: zofht11!!
+    ````
+  - 테이블 초기화
+    ````
+    SET FOREIGN_KEY_CHECKS=0;
+    truncate crew;
+    truncate candidate;
+    truncate candidate_images; 
+    SET FOREIGN_KEY_CHECKS=1;
+    ````
