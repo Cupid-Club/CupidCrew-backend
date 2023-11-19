@@ -33,7 +33,7 @@ class CrewController(
     private val blacklistTokenService: BlacklistTokenService
 ) {
 
-    @Operation(summary = "회원가입", security = [SecurityRequirement(name = "bearerAuth")])
+    @Operation(summary = "회원가입!!!!!!!!!!!!!!", security = [SecurityRequirement(name = "bearerAuth")])
     @PostMapping("/signup")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
     fun signup(@RequestBody crewSignupRequestModel: CrewSignupRequestModel): BaseResponseModel<String> {
