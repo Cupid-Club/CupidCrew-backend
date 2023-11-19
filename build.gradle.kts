@@ -64,8 +64,8 @@ dependencies {
     kapt("com.querydsl:querydsl-apt:$querydslVersion:jpa")
     implementation("com.querydsl:querydsl-apt:$querydslVersion")
     // FCM
-    implementation("com.google.firebase:firebase-admin:9.2.0")
-    implementation("com.google.api-client:google-api-client:2.0")
+//    implementation("com.google.firebase:firebase-admin:9.2.0")
+//    implementation("com.google.api-client:google-api-client:2.0")
     // test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
