@@ -48,7 +48,7 @@ class CandidateDetailController(
     }
 
     @Operation(summary = "나의 소개팅 당사자 정보 수정", security = [SecurityRequirement(name = "bearerAuth")])
-    @PutMapping("/my/{candidateId}/revise")
+    @PostMapping("/my/{candidateId}/revise")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
     fun reviseMyCandidate(
         @PathVariable candidateId: Long,
