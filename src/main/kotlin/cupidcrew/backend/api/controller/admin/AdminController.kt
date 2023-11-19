@@ -5,10 +5,8 @@ import cupidcrew.backend.api.mapper.crew.CrewMapper
 import cupidcrew.backend.api.model.BaseResponseModel
 import cupidcrew.backend.api.model.crew.CrewEmailRequestModel
 import cupidcrew.backend.api.model.crew.CrewSignupResponseModel
-import cupidcrew.backend.api.model.notification.NotificationReceiverModel
 import cupidcrew.backend.api.service.admin.AdminService
 import cupidcrew.backend.api.service.crew.CrewService
-import cupidcrew.backend.api.service.notification.NotificationService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.*
 class AdminController(
         private val crewService: CrewService,
         private val adminService: AdminService,
-        private val notificationService: NotificationService,
         private val crewMapper: CrewMapper,
 
         ) {
@@ -52,16 +49,5 @@ class AdminController(
 
         return BaseResponseModel(HttpStatus.OK.value(), crewsDto.map { crewMapper.toModel(it) })
     }
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @Operation(summary = "crew에게 푸시알람 보내기", security = [SecurityRequirement(name = "bearerAuth")])
-    @PostMapping("/send")
-    fun sendNotificationToUser(@RequestBody notificationReceiverModel: NotificationReceiverModel): BaseResponseModel<String> {
-        notificationService.sendNotification(notificationReceiverModel.firebaseToken, notificationReceiverModel.message)
-        return BaseResponseModel(HttpStatus.OK.value(), "Notification sent!")
-
-    }
-
-
 
 }
