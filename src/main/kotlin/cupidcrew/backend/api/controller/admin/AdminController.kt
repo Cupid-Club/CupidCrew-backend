@@ -20,11 +20,10 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/admin")
 class AdminController(
-        private val crewService: CrewService,
-        private val adminService: AdminService,
-        private val crewMapper: CrewMapper,
-
-        ) {
+    private val crewService: CrewService,
+    private val adminService: AdminService,
+    private val crewMapper: CrewMapper,
+    ) {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @Operation(summary = "회원가입을 위한 승인 절차", security = [SecurityRequirement(name = "bearerAuth")])
     @PostMapping("/changeApprovedStatus")
@@ -48,6 +47,18 @@ class AdminController(
         val crewsDto = adminService.retrieveNotApprovedCrew()
 
         return BaseResponseModel(HttpStatus.OK.value(), crewsDto.map { crewMapper.toModel(it) })
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @Operation(summary = "crew 삭제", security = [SecurityRequirement(name = "bearerAuth")])
+    @DeleteMapping("/{crewId}")
+    @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
+    fun deleteCrew(
+        @PathVariable crewId: Long,
+    ): BaseResponseModel<String> {
+        crewService.deleteCrew(crewId)
+
+        return BaseResponseModel(HttpStatus.OK.value(), "crew delete.")
     }
 
 }

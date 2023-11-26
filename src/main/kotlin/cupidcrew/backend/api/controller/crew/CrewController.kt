@@ -33,7 +33,7 @@ class CrewController(
     private val blacklistTokenService: BlacklistTokenService
 ) {
 
-    @Operation(summary = "회원가입!!!!!!!!!!!!!!", security = [SecurityRequirement(name = "bearerAuth")])
+    @Operation(summary = "회원가입", security = [SecurityRequirement(name = "bearerAuth")])
     @PostMapping("/signup")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
     fun signup(@RequestBody crewSignupRequestModel: CrewSignupRequestModel): BaseResponseModel<String> {
@@ -101,5 +101,18 @@ class CrewController(
 
         return BaseResponseModel(HttpStatus.OK.value(), "Successfully password is reset!")
     }
+
+    @Operation(summary = "회원 탈퇴", security = [SecurityRequirement(name = "bearerAuth")])
+    @DeleteMapping("{crewId}")
+    @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
+    fun deleteCrew(
+        @PathVariable crewId: Long,
+    ): BaseResponseModel<String> {
+        crewService.deleteCrew(crewId)
+
+        return BaseResponseModel(HttpStatus.OK.value(), "Successfully deleted.")
+    }
+
+
 
 }

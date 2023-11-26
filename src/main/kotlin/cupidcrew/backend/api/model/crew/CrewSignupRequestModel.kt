@@ -9,5 +9,5 @@ data class CrewSignupRequestModel(
     var password: String,
     val mutualFriend: String,
     val company: String,
-    val firebaseToken: String,
+//    val firebaseToken: String,
 )

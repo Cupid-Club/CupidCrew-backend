@@ -28,8 +28,8 @@ class CrewEntity(
     @Column(nullable = false)
     val company: String,
 
-    @Column(nullable = false)
-    val firebaseToken: String,
+//    @Column(nullable = false)
+//    val firebaseToken: String,
 
     @Column(nullable = false)
     var approved: Boolean,
