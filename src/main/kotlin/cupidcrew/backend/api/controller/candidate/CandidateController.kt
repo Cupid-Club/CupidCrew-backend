@@ -111,7 +111,7 @@ class CandidateController(
 
 
     @Operation(summary = "소개팅 남녀 사진 업로드", security = [SecurityRequirement(name = "bearerAuth")])
-    @PostMapping("/my/photo", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/upload", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
     fun uploadFiles(
         @RequestPart("files") files: List<MultipartFile>): BaseResponseModel<List<String>> {
