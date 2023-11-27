@@ -26,58 +26,8 @@ import org.springframework.web.bind.annotation.*
 class CandidateDetailController(
     private val candidateService: CandidateService,
     private val candidateDetailService: CandidateDetailService,
-//    private val crewService: CrewService,
-//    private val candidateMapper: CandidateMapper,
-//    private val jwtTokenUtil:  JwtTokenUtil,
     private val crewMapper: CrewMapper,
 ) {
-//    @Operation(summary = "나의 소개팅 당사자 조회", security = [SecurityRequirement(name = "bearerAuth")])
-//    @GetMapping("/my")
-//    @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
-//    fun getMyCandidates(
-//        @RequestHeader("Authorization") token: String,
-//    ): BaseResponseModel<List<CandidateInfoResponseModel>> {
-//        val actualToken = token.substring("Bearer ".length)
-//        val crewEmail = jwtTokenUtil.extractUsername(actualToken)
-//        val crew = crewService.findCrewByEmail(crewEmail)
-//
-//        val candidatesDto = candidateDetailService.retrieveMyCandidates(crew)
-//
-//        return BaseResponseModel(HttpStatus.OK.value(), candidatesDto.map { candidateMapper.toModel(it) })
-//    }
-//
-//    @Operation(summary = "나의 소개팅 당사자 정보 수정", security = [SecurityRequirement(name = "bearerAuth")])
-//    @PostMapping("/my/{candidateId}/revise")
-//    @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
-//    fun reviseMyCandidate(
-//        @PathVariable candidateId: Long,
-//        @RequestBody candidateInfoRequestModel: CandidateInfoRequestModel,
-//    ): BaseResponseModel<CandidateInfoResponseModel> {
-//        if (!candidateService.existsCandidateById(candidateId)) {
-//            throw BaseException(BaseResponseCode.CANDIDATE_NOT_FOUND)
-//        }
-//
-//        val candidateDto = candidateMapper.toDto(candidateInfoRequestModel)
-//
-//        candidateDetailService.reviseCandidate(candidateDto)
-//
-//        return BaseResponseModel(HttpStatus.OK.value(), candidateMapper.toModel(candidateDto))
-//    }
-//
-//    @Operation(summary = "나의 소개팅 당사자 삭제", security = [SecurityRequirement(name = "bearerAuth")])
-//    @DeleteMapping("/my/{candidateId}")
-//    @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
-//    fun deleteMyCandidate(
-//        @PathVariable candidateId: Long,
-//    ): BaseResponseModel<String> {
-//        if (!candidateService.existsCandidateById(candidateId)) {
-//            throw BaseException(BaseResponseCode.CANDIDATE_NOT_FOUND)
-//        }
-//
-//        candidateDetailService.deleteCandidate(candidateId)
-//
-//        return BaseResponseModel(HttpStatus.OK.value(), "delete.")
-//    }
 
     @Operation(summary = "나의 소개팅 당사자 인기도 증가", security = [SecurityRequirement(name = "bearerAuth")])
     @PostMapping("/my/{candidateId}/popularity")

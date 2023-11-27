@@ -35,7 +35,7 @@ class CandidateController(
     private val fileStorageService: FileStorageService,
 
     ) {
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+
     @Operation(summary = "모든 소개팅 당사자 조회", security = [SecurityRequirement(name = "bearerAuth")])
     @GetMapping("/all")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
@@ -55,7 +55,7 @@ class CandidateController(
         return BaseResponseModel(HttpStatus.OK.value(), candidatesDto.map { candidateMapper.toModel(it) })
     }
 
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+
     @Operation(summary = "Single인 소개팅 당사자 조회", security = [SecurityRequirement(name = "bearerAuth")])
     @GetMapping("/single")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
@@ -113,30 +113,6 @@ class CandidateController(
     }
 
 
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-//    @Operation(summary = "소개팅 당사자 등록", security = [SecurityRequirement(name = "bearerAuth")])
-//    @PostMapping("/new")
-//    @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
-//    fun addCandidates(
-//        @RequestHeader("Authorization") token: String,
-//        @RequestBody candidateInfoRequestModel: CandidateInfoRequestModel,
-//    ): BaseResponseModel<Long> {
-//        if (candidateService.existsCandidateByPhoneNumber(candidateInfoRequestModel.phoneNumber)) {
-//            throw BaseException(BaseResponseCode.DUPLICATE_PHONE_NUMBER)
-//        }
-//
-//        val actualToken = token.substring("Bearer ".length)
-//        val email = jwtTokenUtil.extractUsername(actualToken)
-//        val candidateInfoRequestModelWithCrewId = candidateInfoRequestModel.apply {
-//            this.crew = email
-//        }
-//
-//        val candidateDto = candidateMapper.toDto(candidateInfoRequestModelWithCrewId)
-//
-//        return BaseResponseModel(HttpStatus.OK.value(), candidateMapper.toModel(candidateDetailService.createCandidate(candidateDto)).id)
-//    }
-
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @Operation(summary = "소개팅 남녀 사진 업로드", security = [SecurityRequirement(name = "bearerAuth")])
     @PostMapping("/upload", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
