@@ -50,6 +50,18 @@ class AdminController(
         return BaseResponseModel(HttpStatus.OK.value(), crewsDto.map { crewMapper.toModel(it) })
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @Operation(summary = "crew 삭제", security = [SecurityRequirement(name = "bearerAuth")])
+    @DeleteMapping("/{crewId}")
+    @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
+    fun deleteCrew(
+        @PathVariable crewId: Long,
+    ): BaseResponseModel<String> {
+        crewService.deleteCrew(crewId)
+
+        return BaseResponseModel(HttpStatus.OK.value(), "crew delete.")
+    }
+
 
 
 }

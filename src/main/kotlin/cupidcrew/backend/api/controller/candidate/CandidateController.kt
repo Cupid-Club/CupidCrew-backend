@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
 @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-@Tag(name = "[Candidates]", description = "소개팅 당사자 정보 관련 api들")
+@Tag(name = "[Candidate]", description = "소개팅 당사자 정보 관련 api들")
 @RestController
-@RequestMapping("/candidates")
+@RequestMapping("/candidate")
 class CandidateController(
     private val crewService: CrewService,
     private val candidateService: CandidateService,
@@ -74,9 +74,24 @@ class CandidateController(
         return BaseResponseModel(HttpStatus.OK.value(), candidatesDto.map { candidateMapper.toModel(it) })
     }
 
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @Operation(summary = "나의 소개팅 당사자 조회", security = [SecurityRequirement(name = "bearerAuth")])
+    @GetMapping("/my")
+    @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
+    fun retrieveMyCandidates(
+        @RequestHeader("Authorization") token: String,
+    ): BaseResponseModel<List<CandidateInfoResponseModel>> {
+        val actualToken = token.substring("Bearer ".length)
+        val crewEmail = jwtTokenUtil.extractUsername(actualToken)
+        val crew = crewService.findCrewByEmail(crewEmail)
+
+        val candidatesDto = candidateService.retrieveMyCandidates(crew)
+
+        return BaseResponseModel(HttpStatus.OK.value(), candidatesDto.map { candidateMapper.toModel(it) })
+    }
+
+
     @Operation(summary = "소개팅 당사자 등록", security = [SecurityRequirement(name = "bearerAuth")])
-    @PostMapping("/new")
+    @PostMapping("/my")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
     fun addCandidates(
         @RequestHeader("Authorization") token: String,
@@ -94,8 +109,32 @@ class CandidateController(
 
         val candidateDto = candidateMapper.toDto(candidateInfoRequestModelWithCrewId)
 
-        return BaseResponseModel(HttpStatus.OK.value(), candidateMapper.toModel(candidateDetailService.createCandidate(candidateDto)).id)
+        return BaseResponseModel(HttpStatus.OK.value(), candidateMapper.toModel(candidateService.createCandidate(candidateDto)).id)
     }
+
+
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+//    @Operation(summary = "소개팅 당사자 등록", security = [SecurityRequirement(name = "bearerAuth")])
+//    @PostMapping("/new")
+//    @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
+//    fun addCandidates(
+//        @RequestHeader("Authorization") token: String,
+//        @RequestBody candidateInfoRequestModel: CandidateInfoRequestModel,
+//    ): BaseResponseModel<Long> {
+//        if (candidateService.existsCandidateByPhoneNumber(candidateInfoRequestModel.phoneNumber)) {
+//            throw BaseException(BaseResponseCode.DUPLICATE_PHONE_NUMBER)
+//        }
+//
+//        val actualToken = token.substring("Bearer ".length)
+//        val email = jwtTokenUtil.extractUsername(actualToken)
+//        val candidateInfoRequestModelWithCrewId = candidateInfoRequestModel.apply {
+//            this.crew = email
+//        }
+//
+//        val candidateDto = candidateMapper.toDto(candidateInfoRequestModelWithCrewId)
+//
+//        return BaseResponseModel(HttpStatus.OK.value(), candidateMapper.toModel(candidateDetailService.createCandidate(candidateDto)).id)
+//    }
 
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @Operation(summary = "소개팅 남녀 사진 업로드", security = [SecurityRequirement(name = "bearerAuth")])
@@ -104,6 +143,31 @@ class CandidateController(
     fun uploadFiles(
         @RequestPart("files") files: List<MultipartFile>): BaseResponseModel<List<String>> {
         return BaseResponseModel(HttpStatus.OK.value(), fileStorageService.uploadFiles(files))
+    }
+
+    @Operation(summary = "나의 소개팅 당사자 정보 수정", security = [SecurityRequirement(name = "bearerAuth")])
+    @PatchMapping("/my/{candidateId}")
+    @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
+    fun reviseMyCandidate(
+        @PathVariable candidateId: Long,
+        @RequestBody candidateInfoRequestModel: CandidateInfoRequestModel,
+    ): BaseResponseModel<CandidateInfoResponseModel> {
+        val candidateDto = candidateMapper.toDto(candidateInfoRequestModel)
+        val updatedCandidateDto = candidateService.updateCandidate(candidateId, candidateDto)
+
+        return BaseResponseModel(HttpStatus.OK.value(), candidateMapper.toModel(updatedCandidateDto))
+    }
+
+
+    @Operation(summary = "나의 소개팅 당사자 삭제", security = [SecurityRequirement(name = "bearerAuth")])
+    @DeleteMapping("/my/{candidateId}")
+    @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
+    fun deleteMyCandidate(
+        @PathVariable candidateId: Long,
+    ): BaseResponseModel<String> {
+        candidateService.deleteCandidate(candidateId)
+
+        return BaseResponseModel(HttpStatus.OK.value(), "delete.")
     }
 
 }

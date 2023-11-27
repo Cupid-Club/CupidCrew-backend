@@ -47,4 +47,11 @@ class CrewService(
         return crewRepository.resetPassword(crewId, encodedNewPassword)
     }
 
+    fun deleteCrew(crewId: Long) {
+        val crewEntity = crewRepository.findById(crewId)
+            .orElseThrow{ throw BaseException(BaseResponseCode.CREW_NOT_FOUND) }
+
+        crewRepository.delete(crewEntity)
+    }
+
 }
