@@ -28,9 +28,6 @@ class CandidateService(
         return candidateRepository.existsByPhoneNumber(phoneNumber)
     }
 
-    fun existsCandidateById(candidateId: Long): Boolean {
-        return candidateRepository.existsById(candidateId)
-    }
 
     fun retrieveMyCandidates(crew: CrewEntity): List<CandidateInfoRequestDto> {
         val candidates = candidateRepository.findByCrew(crew)

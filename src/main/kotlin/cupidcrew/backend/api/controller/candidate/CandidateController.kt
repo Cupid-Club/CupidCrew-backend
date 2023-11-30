@@ -121,6 +121,7 @@ class CandidateController(
         return BaseResponseModel(HttpStatus.OK.value(), fileStorageService.uploadFiles(files))
     }
 
+
     @Operation(summary = "나의 소개팅 당사자 정보 수정", security = [SecurityRequirement(name = "bearerAuth")])
     @PatchMapping("/my/{candidateId}")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])

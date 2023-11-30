@@ -4,6 +4,8 @@ import cupidcrew.backend.api.dao.crew.CrewEntity
 import cupidcrew.backend.api.dto.candidate.CandidateInfoRequestDto
 import cupidcrew.backend.api.dto.crew.CrewSignupRequestDto
 import cupidcrew.backend.api.dto.crew.CrewWithCrewIdResponseDto
+import cupidcrew.backend.api.exception.BaseException
+import cupidcrew.backend.api.exception.BaseResponseCode
 import cupidcrew.backend.api.mapper.candidate.CandidateMapper
 import cupidcrew.backend.api.mapper.crew.CrewMapper
 import cupidcrew.backend.api.repository.candidate.CandidateRepository
@@ -46,7 +48,9 @@ class CandidateDetailService(
     }
 
     fun getCrewIdBySelectedCandidateId(candidateId: Long): CrewWithCrewIdResponseDto? {
-        val candidate = candidateRepository.findById(candidateId).orElse(null)
+        val candidate = candidateRepository.findById(candidateId)
+            .orElseThrow { throw BaseException(BaseResponseCode.CANDIDATE_NOT_FOUND) }
+
         return candidate?.crew?.let { crewMapper.toDtoWithCrewId(it) }
     }
 }

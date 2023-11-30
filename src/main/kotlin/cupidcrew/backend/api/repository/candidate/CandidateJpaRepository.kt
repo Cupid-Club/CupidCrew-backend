@@ -14,4 +14,5 @@ interface CandidateJpaRepository : JpaRepository<CandidateEntity, Long> {
     fun findByCrew(crew: CrewEntity): List<CandidateEntity>
 
     override fun findById(candidateId: Long): Optional<CandidateEntity>
+
 }
