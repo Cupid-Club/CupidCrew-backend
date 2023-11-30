@@ -50,8 +50,8 @@ http://localhost:8080/swagger-ui/index.html
   
   4.bucket 만들기  
   /usr/bin/mc alias set cupidcrew http://minio:9000 ivy 123456789
-  /usr/bin/mc mb cupidcrew/candidates
-  /usr/bin/mc policy set public cupidcrew/candidates
+  /usr/bin/mc mb cupidcrew/candidate
+  /usr/bin/mc policy set public cupidcrew/candidate
   ````
 
 - Supervisord 설정
