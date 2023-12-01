@@ -40,7 +40,7 @@ minio:
   url: http://localhost:9000
   accessKey: ivy
   secretKey: 123456789
-  bucketName: candidates
+  bucketName: candidate
 
 #logging:
 #  config: src/main/resources/log4j2.yaml

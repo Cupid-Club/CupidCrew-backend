@@ -25,26 +25,28 @@ import org.springframework.web.multipart.MultipartFile
 @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 @Tag(name = "[Candidate]", description = "소개팅 당사자 정보 관련 api들")
 @RestController
-@RequestMapping("/candidate")
+@RequestMapping("/candidates")
 class CandidateController(
     private val crewService: CrewService,
     private val candidateService: CandidateService,
+    private val candidateDetailService: CandidateDetailService,
     private val candidateMapper: CandidateMapper,
     private val jwtTokenUtil: JwtTokenUtil,
     private val fileStorageService: FileStorageService,
+
     ) {
 
     @Operation(summary = "모든 소개팅 당사자 조회", security = [SecurityRequirement(name = "bearerAuth")])
     @GetMapping("/all")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
-    fun retrieveAllCandidates(
+    fun getAllCandidates(
         @RequestHeader("Authorization") token: String,
     ): BaseResponseModel<List<CandidateInfoResponseModel>> {
         val actualToken = token.substring("Bearer ".length)
         val crewEmail = jwtTokenUtil.extractUsername(actualToken)
         val crew = crewService.findCrewByEmail(crewEmail)
 
-        if (candidateService.retrieveMyCandidates(crew).isEmpty()) {
+        if (candidateDetailService.retrieveMyCandidates(crew).isEmpty()) {
             throw BaseException(BaseResponseCode.LIMIT_QUALIFICATION_NO_CANDIDATE_REGISTERED)
         }
 
@@ -53,17 +55,18 @@ class CandidateController(
         return BaseResponseModel(HttpStatus.OK.value(), candidatesDto.map { candidateMapper.toModel(it) })
     }
 
+
     @Operation(summary = "Single인 소개팅 당사자 조회", security = [SecurityRequirement(name = "bearerAuth")])
     @GetMapping("/single")
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
-    fun retrieveSingleCandidates(
+    fun getSingleCandidates(
         @RequestHeader("Authorization") token: String,
     ): BaseResponseModel<List<CandidateInfoResponseModel>> {
         val actualToken = token.substring("Bearer ".length)
         val crewEmail = jwtTokenUtil.extractUsername(actualToken)
         val crew = crewService.findCrewByEmail(crewEmail)
 
-        if (candidateService.retrieveMyCandidates(crew).isEmpty()) {
+        if (candidateDetailService.retrieveMyCandidates(crew).isEmpty()) {
             throw BaseException(BaseResponseCode.LIMIT_QUALIFICATION_NO_CANDIDATE_REGISTERED)
         }
 
@@ -111,7 +114,7 @@ class CandidateController(
 
 
     @Operation(summary = "소개팅 남녀 사진 업로드", security = [SecurityRequirement(name = "bearerAuth")])
-    @PostMapping("/my/photo", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/upload", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
     fun uploadFiles(
         @RequestPart("files") files: List<MultipartFile>): BaseResponseModel<List<String>> {

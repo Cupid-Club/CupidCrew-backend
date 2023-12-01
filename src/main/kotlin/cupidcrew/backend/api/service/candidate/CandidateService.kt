@@ -7,7 +7,7 @@ import cupidcrew.backend.api.exception.BaseResponseCode
 import cupidcrew.backend.api.mapper.candidate.CandidateMapper
 import cupidcrew.backend.api.repository.candidate.CandidateRepository
 import org.springframework.stereotype.Service
-import javax.transaction.Transactional
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class CandidateService(
@@ -28,9 +28,6 @@ class CandidateService(
         return candidateRepository.existsByPhoneNumber(phoneNumber)
     }
 
-    fun existsCandidateById(candidateId: Long): Boolean {
-        return candidateRepository.existsById(candidateId)
-    }
 
     fun retrieveMyCandidates(crew: CrewEntity): List<CandidateInfoRequestDto> {
         val candidates = candidateRepository.findByCrew(crew)
@@ -74,5 +71,4 @@ class CandidateService(
 
         candidateRepository.delete(candidateEntity)
     }
-
 }

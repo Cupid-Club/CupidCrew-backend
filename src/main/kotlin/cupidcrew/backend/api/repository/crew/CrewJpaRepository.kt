@@ -1,7 +1,9 @@
 package cupidcrew.backend.api.repository.crew
 
+import cupidcrew.backend.api.dao.candidate.CandidateEntity
 import cupidcrew.backend.api.dao.crew.CrewEntity
 import org.springframework.data.jpa.repository.JpaRepository
+import java.util.*
 
 interface CrewJpaRepository : JpaRepository<CrewEntity, Long> {
     fun findByEmail(email: String): CrewEntity?

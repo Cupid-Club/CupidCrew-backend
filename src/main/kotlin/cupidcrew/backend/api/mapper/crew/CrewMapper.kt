@@ -2,11 +2,11 @@ package cupidcrew.backend.api.mapper.crew
 
 import cupidcrew.backend.api.dao.crew.CrewEntity
 import cupidcrew.backend.api.dto.crew.CrewFindIdResponseDto
-import cupidcrew.backend.api.dto.crew.CrewFirebaseTokenResponseDto
+import cupidcrew.backend.api.dto.crew.CrewWithCrewIdResponseDto
 import cupidcrew.backend.api.dto.crew.CrewSignupRequestDto
-import cupidcrew.backend.api.model.crew.CrewFireBaseTokenResponseModel
 import cupidcrew.backend.api.model.crew.CrewSignupRequestModel
 import cupidcrew.backend.api.model.crew.CrewSignupResponseModel
+import cupidcrew.backend.api.model.crew.CrewWithCrewIdResponseModel
 import org.mapstruct.*
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.stereotype.Component
@@ -28,13 +28,13 @@ abstract class CrewMapper {
 
     @Named("mapRoleToString")
     fun mapRoleToString(role: SimpleGrantedAuthority): String = role.authority
-    
+
     abstract fun toModel(dto: CrewSignupRequestDto) : CrewSignupResponseModel
 
     abstract fun toDtoFindId(entity: CrewEntity) : CrewFindIdResponseDto
 
-    abstract fun toDtoFirebaseToken(entity: CrewEntity) : CrewFirebaseTokenResponseDto
+    abstract fun toDtoWithCrewId(entity: CrewEntity) : CrewWithCrewIdResponseDto
 
-    abstract fun toModelFireBaseToken(dto: CrewFirebaseTokenResponseDto) : CrewFireBaseTokenResponseModel
+    abstract fun toModelWithCrewId(dto: CrewWithCrewIdResponseDto) : CrewWithCrewIdResponseModel
 
 }
