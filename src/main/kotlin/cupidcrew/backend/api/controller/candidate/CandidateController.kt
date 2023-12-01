@@ -22,7 +22,7 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
-@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+//@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 @Tag(name = "[Candidate]", description = "소개팅 당사자 정보 관련 api들")
 @RestController
 @RequestMapping("/candidates")
@@ -118,6 +118,7 @@ class CandidateController(
     @ApiResponses(value = [ApiResponse(responseCode = "200", description = "OK")])
     fun uploadFiles(
         @RequestPart("files") files: List<MultipartFile>): BaseResponseModel<List<String>> {
+        println("[upload controller]")
         return BaseResponseModel(HttpStatus.OK.value(), fileStorageService.uploadFiles(files))
     }
 

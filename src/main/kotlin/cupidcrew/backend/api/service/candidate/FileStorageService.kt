@@ -19,7 +19,7 @@ class FileStorageService(private val minioClient: MinioClient) {
 
     fun uploadFiles(imageList: List<MultipartFile>): List<String> {
         val urlList = mutableListOf<String>()
-
+        println("[upload service] $urlList")
         imageList.forEach { file ->
             val inputStream: InputStream = file.inputStream
             
